@@ -6,6 +6,13 @@
 #include "G4GDMLParser.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4NistManager.hh"
+#include "G4Material.hh"
+#include "G4Box.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4ThreeVector.hh"
+
 DetectorConstruction::DetectorConstruction()
 {
     fMessenger = new DetectorMessenger(this);
@@ -43,21 +50,23 @@ void DetectorConstruction::ReadGDML(const G4String& filename)
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-    if (!fGDMLFile.empty()) {
-        fParser.Read(fGDMLFile, false);
-        return fParser.GetWorldVolume();
+    // Always return the currently loaded world volume
+    G4VPhysicalVolume* world = fParser.GetWorldVolume();
+
+    if (!world) {
+        // Default: empty vacuum box
+        G4NistManager* nist = G4NistManager::Instance();
+        G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
+
+        G4Box* worldSolid = new G4Box("World", 1.*m, 1.*m, 1.*m);
+        G4LogicalVolume* worldLog = new G4LogicalVolume(worldSolid, vacuum, "World");
+        G4VPhysicalVolume* worldPhys = new G4PVPlacement(
+            nullptr, G4ThreeVector(), worldLog, "World", nullptr, false, 0);
+
+        return worldPhys;
     }
 
-    // Default: empty vacuum box
-    G4NistManager* nist = G4NistManager::Instance();
-    G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
-
-    G4Box* worldSolid = new G4Box("World", 1.*CLHEP::m, 1.*CLHEP::m, 1.*CLHEP::m);
-    G4LogicalVolume* worldLog = new G4LogicalVolume(worldSolid, vacuum, "World");
-    G4VPhysicalVolume* worldPhys = new G4PVPlacement(
-        nullptr, G4ThreeVector(), worldLog, "World", nullptr, false, 0);
-
-    return worldPhys;
+    return world;
 }
 
 /*
