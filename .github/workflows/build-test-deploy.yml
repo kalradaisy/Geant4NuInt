@@ -30,6 +30,7 @@ jobs:
           pwd; ls -lrt
           ldconfig
           ldd ./build/neutrino
+          echo $LD_LIBRARY_PATH
           ./build/neutrino neutrino_demo/run.mac
           pwd; ls -lrt
       
