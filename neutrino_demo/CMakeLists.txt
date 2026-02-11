@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.15)
+project(neutrino_demo)
+
+find_package(Geant4 REQUIRED ui_all vis_all)
+
+include(${Geant4_USE_FILE})
+
+# Add all source files
+set(SOURCES
+    DetectorConstruction.cc
+    DetectorMessenger.cc
+    PrimaryGenerator.cc
+    PrimaryGeneratorMessenger.cc
+    RunAction.cc
+    main.cc
+)
+
+set(HEADERS
+    DetectorConstruction.hh
+    DetectorMessenger.hh
+    PrimaryGenerator.hh
+    PrimaryGeneratorMessenger.hh
+    RunAction.hh
+)
+
+add_executable(neutrino ${SOURCES})
+target_link_libraries(neutrino ${Geant4_LIBRARIES})

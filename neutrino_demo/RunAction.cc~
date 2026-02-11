@@ -1,0 +1,25 @@
+#include "G4UserRunAction.hh"
+#include "G4AnalysisManager.hh"
+
+class RunAction : public G4UserRunAction {
+public:
+    RunAction() {}
+    virtual ~RunAction() {}
+
+    virtual void BeginOfRunAction(const G4Run*) override {
+        auto analysisManager = G4AnalysisManager::Instance();
+        analysisManager->OpenFile("neutrino.root");
+        analysisManager->CreateNtuple("nu", "Neutrino events");
+        analysisManager->CreateNtupleDColumn("energy"); // neutrino energy
+        analysisManager->CreateNtupleDColumn("x");
+        analysisManager->CreateNtupleDColumn("y");
+        analysisManager->CreateNtupleDColumn("z");
+        analysisManager->FinishNtuple();
+    }
+
+    virtual void EndOfRunAction(const G4Run*) override {
+        auto analysisManager = G4AnalysisManager::Instance();
+        analysisManager->Write();
+        analysisManager->CloseFile();
+    }
+};
