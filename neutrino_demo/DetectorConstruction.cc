@@ -43,17 +43,21 @@ void DetectorConstruction::ReadGDML(const G4String& filename)
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-    // Always return the currently loaded world volume
-    G4VPhysicalVolume* world = fParser.GetWorldVolume();
-
-    if (!world) {
-        G4Exception("DetectorConstruction::Construct()",
-                    "NoGDML",
-                    FatalException,
-                    "World volume is NULL. GDML was not loaded correctly.");
+    if (!fGDMLFile.empty()) {
+        fParser.Read(fGDMLFile, false);
+        return fParser.GetWorldVolume();
     }
 
-    return world;
+    // Default: empty vacuum box
+    G4NistManager* nist = G4NistManager::Instance();
+    G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
+
+    G4Box* worldSolid = new G4Box("World", 1.*CLHEP::m, 1.*CLHEP::m, 1.*CLHEP::m);
+    G4LogicalVolume* worldLog = new G4LogicalVolume(worldSolid, vacuum, "World");
+    G4VPhysicalVolume* worldPhys = new G4PVPlacement(
+        nullptr, G4ThreeVector(), worldLog, "World", nullptr, false, 0);
+
+    return worldPhys;
 }
 
 /*
