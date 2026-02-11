@@ -22,11 +22,12 @@ inside the container.
 ## Building the Docker Image
 **docker build --platform linux/amd64 -t geant4-clean .**
 ## Running the Container
-docker run -it --rm -v "$PWD":/workspace geant4-clean bash
+**docker run -it --rm -v "$PWD":/workspace geant4-clean bash**
 
 Inside the container, initialize Geant4:
 
-source /opt/geant4-install/bin/geant4.sh
+**source /opt/geant4-install/bin/geant4.sh**
+
 ## Downloading Geant4 Source
 Inside the container:
 cd /workspace
