@@ -1,8 +1,13 @@
 # Geant4MuC
-# Geant4 Neutrino Simulation with Docker
+
+## Geant4 Neutrino Simulation with Docker
 This repository provides a Docker-based environment for building and running
 a Geant4 neutrino simulation example. The setup ensures reproducibility and
 avoids local dependency issues.
+
+## ToDos
+
+See the issues on this repo on GitHub for tasks.
 
 ## Repository Structure
 
@@ -19,60 +24,33 @@ geant4-neutrino/
 geant4-source and build directories are not included and are downloaded
 inside the container.
 
-## Building the Docker Image
-**docker build --platform linux/amd64 -t geant4-clean .**
-## Running the Container
-**docker run -it --rm -v "$PWD":/workspace geant4-clean bash**
 
-Inside the container, initialize Geant4:
+## Docker Images
 
-**source /opt/geant4-install/bin/geant4.sh**
+Images are available at https://github.com/kalradaisy/Geant4MuC/pkgs/container/geant4muc with Geant4 built with GDML and ROOT support. This tool is precompiled in these images, which are built, tested, and deployed automatically in GitHub actions.
 
-## Downloading Geant4 Source
-Inside the container:
+### Building Geant4 manually
 
-**cd /workspace**
-
-**git clone --branch v11.0.4 https://gitlab.cern.ch/geant4/geant4.git geant4-source**
-
-## Building Geant4
-**cd /workspace**
-
-**mkdir build**
-
-**cd build**
-
-**cmake ../geant4-source \
-  -DCMAKE_INSTALL_PREFIX=/opt/geant4-install \
-  -DGEANT4_USE_GDML=ON \
-  -DGEANT4_INSTALL_DATA=ON \
-  -DGEANT4_USE_OPENGL_X11=ON \
-  -DGEANT4_USE_QT=OFF**
-
-**make -j4**
-
-**make install**
-
-Reload environment:
-
-**source /opt/geant4-install/bin/geant4.sh**
+If you need to rebuild Geant4 in a fresh image, you can see the `DOCKERFILE` in this repository.
 
 ## Building the Neutrino Demo
-**cd /workspace/neutrino_demo**
 
-**mkdir build**
-
-**cd build**
-
-**cmake ../**
-
-**make -j4**
+```
+mkdir build
+cd build
+cmake ../neutrino_demo
+cmake --build . 
+```
 
 ## Running the Simulation
-**./neutrino ../run.mac**
+
+```
+./neutrino ../run.mac
+```
 
 ## Installing optional tools
+
+```
 apt update -y
-
 apt install -y emacs libxerces-c-dev
-
+```
