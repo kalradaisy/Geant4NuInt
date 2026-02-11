@@ -1,0 +1,58 @@
+name: Build and Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/lobis/root-geant4-garfield:cpp17_root-v6-26-10_geant4-v11.1.0_garfield-e0a9f171  # Replace with your Docker image
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Configure CMake
+      run: |
+        mkdir -p build
+        cd build
+        cmake ../neutrino_demo/
+    
+    - name: Build
+      run: |
+        cd build
+        cmake --build . 
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: executable
+        path: build/neutrino
+        retention-days: 1
+
+  run:
+    runs-on: ubuntu-latest
+    needs: build
+    container:
+      image: ghcr.io/lobis/root-geant4-garfield:cpp17_root-v6-26-10_geant4-v11.1.0_garfield-e0a9f171  # Replace with your Docker image
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: executable
+        path: ./build
+    
+    - name: Make executable runnable
+      run: chmod +x ./build/neutrino
+    
+    - name: Run executable with input file
+      run: |
+        ./build/neutrino neutrino_demo/vis.mac
+
+        
