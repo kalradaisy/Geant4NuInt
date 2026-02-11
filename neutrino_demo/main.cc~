@@ -7,15 +7,12 @@
 #include "DetectorConstruction.hh"
 #include "PrimaryGenerator.hh"
 #include "RunAction.hh"
+#include "PrimaryGeneratorMessenger.hh"
+#include "EventAction.hh"
+
 
 int main(int argc, char** argv) {
     G4RunManager* runManager = new G4RunManager;
-    auto primary = new PrimaryGenerator();
-    runManager->SetUserAction(primary);
-
-    // attach messenger
-    auto messenger = new PrimaryGeneratorMessenger(primary);
-
     
     auto detector = new DetectorConstruction();
     runManager->SetUserInitialization(detector);
@@ -25,8 +22,17 @@ int main(int argc, char** argv) {
     runManager->SetUserInitialization(factory.GetReferencePhysList("QGSP_BERT"));
 
     // Primary generator
-    runManager->SetUserAction(new PrimaryGenerator());
-    runManager->SetUserAction(new RunAction());
+    //    runManager->SetUserAction(new PrimaryGenerator());
+    auto primary = new PrimaryGenerator();
+    runManager->SetUserAction(primary);
+    // attach messenger to allow macro control
+    auto messenger = new PrimaryGeneratorMessenger(primary);
+
+    auto runAction = new RunAction();
+    runManager->SetUserAction(runAction);
+
+    //    runManager->SetUserAction(new EventAction());
+    runManager->SetUserAction(new EventAction(runAction));
 
     runManager->Initialize();
 

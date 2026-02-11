@@ -1,27 +1,37 @@
 cmake_minimum_required(VERSION 3.15)
 project(neutrino_demo)
 
-find_package(Geant4 REQUIRED ui_all vis_all)
+# --------------------
+# Find ROOT
+# --------------------
+find_package(ROOT REQUIRED COMPONENTS RIO Tree Hist)
+include_directories(${ROOT_INCLUDE_DIRS})
 
+# --------------------
+# Find Geant4
+# --------------------
+find_package(Geant4 REQUIRED ui_all vis_all)
 include(${Geant4_USE_FILE})
 
-# Add all source files
+# --------------------
+# Sources
+# --------------------
 set(SOURCES
     DetectorConstruction.cc
     DetectorMessenger.cc
     PrimaryGenerator.cc
     PrimaryGeneratorMessenger.cc
     RunAction.cc
+    EventAction.cc
     main.cc
 )
 
-set(HEADERS
-    DetectorConstruction.hh
-    DetectorMessenger.hh
-    PrimaryGenerator.hh
-    PrimaryGeneratorMessenger.hh
-    RunAction.hh
-)
-
+# --------------------
+# Executable
+# --------------------
 add_executable(neutrino ${SOURCES})
-target_link_libraries(neutrino ${Geant4_LIBRARIES})
+add_compile_options(-Wno-shadow)
+target_compile_options(neutrino PRIVATE -Wno-shadow)
+
+# Link libraries
+target_link_libraries(neutrino ${ROOT_LIBRARIES} ${Geant4_LIBRARIES})

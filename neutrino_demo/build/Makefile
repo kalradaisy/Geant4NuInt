@@ -177,6 +177,30 @@ DetectorMessenger.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/neutrino.dir/build.make CMakeFiles/neutrino.dir/DetectorMessenger.cc.s
 .PHONY : DetectorMessenger.cc.s
 
+EventAction.o: EventAction.cc.o
+.PHONY : EventAction.o
+
+# target to build an object file
+EventAction.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/neutrino.dir/build.make CMakeFiles/neutrino.dir/EventAction.cc.o
+.PHONY : EventAction.cc.o
+
+EventAction.i: EventAction.cc.i
+.PHONY : EventAction.i
+
+# target to preprocess a source file
+EventAction.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/neutrino.dir/build.make CMakeFiles/neutrino.dir/EventAction.cc.i
+.PHONY : EventAction.cc.i
+
+EventAction.s: EventAction.cc.s
+.PHONY : EventAction.s
+
+# target to generate assembly for a file
+EventAction.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/neutrino.dir/build.make CMakeFiles/neutrino.dir/EventAction.cc.s
+.PHONY : EventAction.cc.s
+
 PrimaryGenerator.o: PrimaryGenerator.cc.o
 .PHONY : PrimaryGenerator.o
 
@@ -288,6 +312,9 @@ help:
 	@echo "... DetectorMessenger.o"
 	@echo "... DetectorMessenger.i"
 	@echo "... DetectorMessenger.s"
+	@echo "... EventAction.o"
+	@echo "... EventAction.i"
+	@echo "... EventAction.s"
 	@echo "... PrimaryGenerator.o"
 	@echo "... PrimaryGenerator.i"
 	@echo "... PrimaryGenerator.s"

@@ -1,31 +1,30 @@
-#ifndef PrimaryGenerator_h
-#define PrimaryGenerator_h
+#ifndef PRIMARYGENERATOR_H
+#define PRIMARYGENERATOR_H
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
-#include "G4Event.hh"
 #include "G4ThreeVector.hh"
-#include "G4SystemOfUnits.hh"
+#include "RunAction.hh"
 
 class PrimaryGenerator : public G4VUserPrimaryGeneratorAction {
 public:
-    PrimaryGenerator();
-    ~PrimaryGenerator();
+    PrimaryGenerator(RunAction* runAction);
+    virtual ~PrimaryGenerator();
 
-    void GeneratePrimaries(G4Event* event) override;
+    virtual void GeneratePrimaries(G4Event* event) override;
 
-    // Methods to set parameters from macro
+    // setters for messenger
     void SetParticleName(const G4String& name) { fParticleName = name; }
-    void SetEnergy(G4double e) { fEnergy = e; }
-    void SetPosition(const G4ThreeVector& pos) { fPosition = pos; }
-    void SetDirection(const G4ThreeVector& dir) { fDirection = dir; }
+    void SetEnergy(G4double energy) { fEnergy = energy; }
 
 private:
     G4ParticleGun* fParticleGun;
-    G4String fParticleName;
-    G4double fEnergy;
     G4ThreeVector fPosition;
     G4ThreeVector fDirection;
+    G4double fEnergy;
+    G4String fParticleName;
+
+    RunAction* fRunAction;
 };
 
 #endif

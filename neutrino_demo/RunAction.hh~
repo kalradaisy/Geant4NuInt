@@ -2,6 +2,7 @@
 #define RUNACTION_H
 
 #include "G4UserRunAction.hh"
+#include "G4Run.hh"
 #include "TFile.h"
 #include "TTree.h"
 
@@ -13,15 +14,15 @@ public:
     virtual void BeginOfRunAction(const G4Run*) override;
     virtual void EndOfRunAction(const G4Run*) override;
 
-    TTree* GetTree() { return fTree; }
+    static TTree* GetTree() { return fTree; }
+    static TFile* GetFile() { return fFile; }
 
-    // Variables for ROOT branches (non-static)
+    // variables
     double E, x, y, z;
-    double finalE, finalX, finalY, finalZ;
 
 private:
-    TFile* fFile;
-    TTree* fTree;
+    static TFile* fFile;
+    static TTree* fTree;
 };
 
 #endif

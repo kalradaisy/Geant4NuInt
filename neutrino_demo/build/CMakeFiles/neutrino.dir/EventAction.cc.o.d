@@ -1,8 +1,8 @@
-CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
- /workspace/neutrino_demo/PrimaryGeneratorMessenger.cc \
- /usr/include/stdc-predef.h \
- /workspace/neutrino_demo/PrimaryGeneratorMessenger.hh \
- /usr/local/include/Geant4/G4UImessenger.hh \
+CMakeFiles/neutrino.dir/EventAction.cc.o: \
+ /workspace/neutrino_demo/EventAction.cc /usr/include/stdc-predef.h \
+ /workspace/neutrino_demo/EventAction.hh \
+ /usr/local/include/Geant4/G4UserEventAction.hh \
+ /usr/local/include/Geant4/G4Event.hh \
  /usr/local/include/Geant4/globals.hh /usr/local/include/Geant4/G4ios.hh \
  /usr/local/include/Geant4/G4Types.hh \
  /usr/local/include/Geant4/G4GlobalConfig.hh /usr/include/c++/11/complex \
@@ -239,45 +239,42 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
  /usr/include/c++/11/bits/parse_numbers.h \
  /usr/include/c++/11/bits/std_mutex.h \
  /usr/include/c++/11/bits/unique_lock.h \
- /usr/local/include/Geant4/G4UIdirectory.hh \
- /usr/local/include/Geant4/G4UIcommand.hh \
- /usr/local/include/Geant4/G4UIparameter.hh \
- /usr/local/include/Geant4/G4UItokenNum.hh \
- /usr/local/include/Geant4/G4ApplicationState.hh \
+ /usr/local/include/Geant4/evtdefs.hh \
+ /usr/local/include/Geant4/G4Allocator.hh /usr/include/c++/11/cstddef \
+ /usr/local/include/Geant4/G4AllocatorPool.hh \
+ /usr/local/include/Geant4/G4PrimaryVertex.hh \
+ /usr/local/include/Geant4/pwdefs.hh \
  /usr/local/include/Geant4/G4ThreeVector.hh \
  /usr/local/include/Geant4/CLHEP/Vector/ThreeVector.h \
  /usr/local/include/Geant4/CLHEP/Utility/defs.h \
  /usr/local/include/Geant4/CLHEP/Vector/ThreeVector.icc \
- /usr/local/include/Geant4/G4UIcmdWithAString.hh \
- /usr/local/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
- /workspace/neutrino_demo/PrimaryGenerator.hh \
- /usr/local/include/Geant4/G4VUserPrimaryGeneratorAction.hh \
- /usr/local/include/Geant4/G4ParticleGun.hh \
- /usr/local/include/Geant4/G4VPrimaryGenerator.hh \
- /usr/local/include/Geant4/G4ParticleDefinition.hh \
- /usr/local/include/Geant4/CLHEP/Units/PhysicalConstants.h \
- /usr/local/include/Geant4/CLHEP/Units/SystemOfUnits.h \
- /usr/local/include/Geant4/G4PDefManager.hh /usr/include/c++/11/stdlib.h \
- /usr/local/include/Geant4/pwdefs.hh \
- /usr/local/include/Geant4/G4AutoLock.hh \
- /usr/local/include/Geant4/G4Threading.hh \
- /usr/include/c++/11/condition_variable \
+ /usr/local/include/Geant4/G4PrimaryParticle.hh \
+ /usr/local/include/Geant4/G4HCofThisEvent.hh \
+ /usr/local/include/Geant4/G4VHitsCollection.hh \
+ /usr/local/include/Geant4/G4DCofThisEvent.hh \
+ /usr/local/include/Geant4/G4VDigiCollection.hh \
+ /usr/local/include/Geant4/G4TrajectoryContainer.hh \
+ /usr/local/include/Geant4/G4VTrajectory.hh \
+ /usr/local/include/Geant4/G4VUserEventInformation.hh \
+ /usr/local/include/Geant4/G4Profiler.hh \
+ /usr/local/include/Geant4/G4Profiler.icc \
+ /usr/local/include/Geant4/PTL/Globals.hh \
+ /usr/local/include/Geant4/PTL/Types.hh /usr/include/c++/11/atomic \
+ /usr/include/c++/11/bits/atomic_base.h \
+ /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
  /usr/include/c++/11/bits/shared_ptr.h \
  /usr/include/c++/11/bits/shared_ptr_base.h \
  /usr/include/c++/11/bits/allocated_ptr.h \
- /usr/include/c++/11/ext/concurrence.h /usr/include/c++/11/future \
- /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_base.h \
- /usr/include/c++/11/bits/atomic_lockfree_defines.h \
- /usr/include/c++/11/bits/atomic_futex.h \
- /usr/include/c++/11/bits/std_thread.h /usr/include/c++/11/thread \
- /usr/include/c++/11/bits/this_thread_sleep.h \
- /usr/local/include/Geant4/G4ParticleDefinition.icc \
- /usr/local/include/Geant4/G4PrimaryVertex.hh \
- /usr/local/include/Geant4/G4Allocator.hh /usr/include/c++/11/cstddef \
- /usr/local/include/Geant4/G4AllocatorPool.hh \
- /usr/local/include/Geant4/G4PrimaryParticle.hh \
- /usr/local/include/Geant4/G4ParticleMomentum.hh \
- /usr/local/include/Geant4/G4ThreeVector.hh \
+ /usr/include/c++/11/ext/concurrence.h \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/backward/auto_ptr.h \
+ /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /usr/local/include/Geant4/PTL/Utility.hh /usr/include/c++/11/set \
+ /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h \
  /workspace/neutrino_demo/RunAction.hh \
  /usr/local/include/Geant4/G4UserRunAction.hh /opt/root/include/TFile.h \
  /opt/root/include/Compression.h /opt/root/include/RtypesCore.h \
@@ -300,12 +297,7 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
  /opt/root/include/TStorage.h /opt/root/include/TVersionCheck.h \
  /opt/root/include/RVersion.h /opt/root/include/TString.h \
  /opt/root/include/TMathBase.h /opt/root/include/ROOT/RStringView.hxx \
- /opt/root/include/ROOT/TypeTraits.hxx /usr/include/c++/11/memory \
- /usr/include/c++/11/bits/stl_raw_storage_iter.h \
- /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
- /usr/include/c++/11/bits/shared_ptr_atomic.h \
- /usr/include/c++/11/backward/auto_ptr.h \
- /usr/include/c++/11/pstl/glue_memory_defs.h /usr/include/c++/11/cstdarg \
+ /opt/root/include/ROOT/TypeTraits.hxx /usr/include/c++/11/cstdarg \
  /opt/root/include/TClass.h /opt/root/include/TDictionary.h \
  /opt/root/include/ESTLType.h /opt/root/include/TObjArray.h \
  /opt/root/include/TSeqCollection.h /opt/root/include/TCollection.h \
@@ -321,10 +313,97 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
  /opt/root/include/Byteswap.h /opt/root/include/TDatime.h \
  /opt/root/include/TUrl.h /opt/root/include/ROOT/RConcurrentHashColl.hxx \
  /opt/root/include/Rtypes.h /opt/root/include/ROOT/TRWSpinLock.hxx \
- /opt/root/include/ROOT/TSpinMutex.hxx /opt/root/include/TTree.h \
+ /opt/root/include/ROOT/TSpinMutex.hxx \
+ /usr/include/c++/11/condition_variable /opt/root/include/TTree.h \
  /opt/root/include/ROOT/TIOFeatures.hxx /opt/root/include/TArrayD.h \
  /opt/root/include/TArray.h /opt/root/include/TArrayI.h \
  /opt/root/include/TAttFill.h /opt/root/include/TAttLine.h \
  /opt/root/include/TAttMarker.h /opt/root/include/TVirtualTreePlayer.h \
  /opt/root/include/TBranch.h /opt/root/include/TBranchCacheInfo.h \
- /opt/root/include/TBits.h
+ /opt/root/include/TBits.h \
+ /usr/local/include/Geant4/G4TrajectoryContainer.hh \
+ /usr/local/include/Geant4/G4Trajectory.hh /usr/include/c++/11/stdlib.h \
+ /usr/local/include/Geant4/trkgdefs.hh \
+ /usr/local/include/Geant4/G4ParticleDefinition.hh \
+ /usr/local/include/Geant4/CLHEP/Units/PhysicalConstants.h \
+ /usr/local/include/Geant4/CLHEP/Units/SystemOfUnits.h \
+ /usr/local/include/Geant4/G4PDefManager.hh \
+ /usr/local/include/Geant4/G4AutoLock.hh \
+ /usr/local/include/Geant4/G4Threading.hh /usr/include/c++/11/future \
+ /usr/include/c++/11/bits/atomic_futex.h \
+ /usr/include/c++/11/bits/std_thread.h /usr/include/c++/11/thread \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
+ /usr/local/include/Geant4/G4ParticleDefinition.icc \
+ /usr/local/include/Geant4/G4TrajectoryPoint.hh \
+ /usr/local/include/Geant4/G4VTrajectoryPoint.hh \
+ /usr/local/include/Geant4/G4Track.hh \
+ /usr/local/include/Geant4/trkdefs.hh \
+ /usr/local/include/Geant4/G4LogicalVolume.hh \
+ /usr/local/include/Geant4/G4Region.hh \
+ /usr/local/include/Geant4/G4GeomSplitter.hh \
+ /usr/local/include/Geant4/geomwdefs.hh \
+ /usr/local/include/Geant4/G4Region.icc \
+ /usr/local/include/Geant4/G4VPhysicalVolume.hh \
+ /usr/local/include/Geant4/geomdefs.hh \
+ /usr/local/include/Geant4/G4RotationMatrix.hh \
+ /usr/local/include/Geant4/CLHEP/Vector/Rotation.h \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationInterfaces.h \
+ /usr/local/include/Geant4/CLHEP/Vector/LorentzVector.h \
+ /usr/local/include/Geant4/CLHEP/Vector/LorentzVector.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/AxisAngle.h \
+ /usr/local/include/Geant4/CLHEP/Vector/AxisAngle.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationInterfaces.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationX.h \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationX.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationY.h \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationY.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationZ.h \
+ /usr/local/include/Geant4/CLHEP/Vector/RotationZ.icc \
+ /usr/local/include/Geant4/CLHEP/Vector/Rotation.icc \
+ /usr/local/include/Geant4/G4VPhysicalVolume.icc \
+ /usr/local/include/Geant4/G4LogicalVolume.icc \
+ /usr/local/include/Geant4/G4DynamicParticle.hh \
+ /usr/local/include/Geant4/G4LorentzVector.hh \
+ /usr/local/include/Geant4/G4Log.hh \
+ /usr/local/include/Geant4/G4ParticleMomentum.hh \
+ /usr/local/include/Geant4/G4ElectronOccupancy.hh \
+ /usr/local/include/Geant4/G4DynamicParticle.icc \
+ /usr/local/include/Geant4/G4TrackStatus.hh \
+ /usr/local/include/Geant4/G4TouchableHandle.hh \
+ /usr/local/include/Geant4/G4VTouchable.hh \
+ /usr/local/include/Geant4/G4VTouchable.icc \
+ /usr/local/include/Geant4/G4ReferenceCountedHandle.hh \
+ /usr/local/include/Geant4/G4VUserTrackInformation.hh \
+ /usr/local/include/Geant4/G4PhysicsModelCatalog.hh \
+ /usr/local/include/Geant4/G4Material.hh \
+ /usr/local/include/Geant4/G4Element.hh \
+ /usr/local/include/Geant4/G4Isotope.hh \
+ /usr/local/include/Geant4/G4IonisParamElm.hh \
+ /usr/local/include/Geant4/G4IsotopeVector.hh \
+ /usr/local/include/Geant4/G4ElementTable.hh \
+ /usr/local/include/Geant4/G4ElementVector.hh \
+ /usr/local/include/Geant4/G4MaterialPropertiesTable.hh \
+ /usr/local/include/Geant4/G4MaterialPropertiesIndex.hh \
+ /usr/local/include/Geant4/G4MaterialPropertyVector.hh \
+ /usr/local/include/Geant4/G4PhysicsFreeVector.hh \
+ /usr/local/include/Geant4/G4PhysicsVector.hh /usr/include/c++/11/fstream \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc \
+ /usr/local/include/Geant4/G4PhysicsVectorType.hh \
+ /usr/local/include/Geant4/G4PhysicsVector.icc \
+ /usr/local/include/Geant4/G4IonisParamMat.hh \
+ /usr/local/include/Geant4/G4Exp.hh \
+ /usr/local/include/Geant4/G4SandiaTable.hh \
+ /usr/local/include/Geant4/G4OrderedTable.hh \
+ /usr/local/include/Geant4/G4DataVector.hh \
+ /usr/local/include/Geant4/G4DataVector.icc \
+ /usr/local/include/Geant4/G4MaterialTable.hh \
+ /usr/local/include/Geant4/G4Track.icc \
+ /usr/local/include/Geant4/G4Step.hh \
+ /usr/local/include/Geant4/G4StepPoint.hh \
+ /usr/local/include/Geant4/G4SteppingControl.hh \
+ /usr/local/include/Geant4/G4StepStatus.hh \
+ /usr/local/include/Geant4/G4StepPoint.icc \
+ /usr/local/include/Geant4/G4TrackVector.hh \
+ /usr/local/include/Geant4/G4Step.icc

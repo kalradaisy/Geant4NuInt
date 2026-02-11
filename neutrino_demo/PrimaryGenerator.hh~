@@ -1,19 +1,26 @@
-#ifndef PRIMARYGENERATOR_HH
-#define PRIMARYGENERATOR_HH
+#ifndef PRIMARYGENERATOR_H
+#define PRIMARYGENERATOR_H
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
-#include "G4Event.hh"
+#include "G4ThreeVector.hh"
+#include "RunAction.hh"
 
 class PrimaryGenerator : public G4VUserPrimaryGeneratorAction {
 public:
-    PrimaryGenerator();
+    PrimaryGenerator(RunAction* runAction);  // constructor with RunAction pointer
     virtual ~PrimaryGenerator();
 
     virtual void GeneratePrimaries(G4Event* event) override;
 
 private:
     G4ParticleGun* fParticleGun;
+    G4ThreeVector fPosition;
+    G4ThreeVector fDirection;
+    G4double fEnergy;
+    G4String fParticleName;
+
+    RunAction* fRunAction;  // pointer to RunAction
 };
 
 #endif

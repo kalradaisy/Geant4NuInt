@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DG4LIB_BUILD_DLL -DG4UI_USE_TCSH
 
-CXX_INCLUDES = -isystem /usr/local/include/Geant4
+CXX_INCLUDES = -I/opt/root/include -isystem /usr/local/include/Geant4
 
-CXX_FLAGS = -W -Wall -pedantic -Wno-non-virtual-dtor -Wno-long-long -Wwrite-strings -Wpointer-arith -Woverloaded-virtual -Wno-variadic-macros -Wshadow -pipe -pthread -ftls-model=initial-exec -std=c++17  -O3 -DNDEBUG -fno-trapping-math -ftree-vectorize -fno-math-errno -O3 -DNDEBUG
+CXX_FLAGS = -W -Wall -pedantic -Wno-non-virtual-dtor -Wno-long-long -Wwrite-strings -Wpointer-arith -Woverloaded-virtual -Wno-variadic-macros -Wshadow -pipe -pthread -ftls-model=initial-exec -std=c++17  -O3 -DNDEBUG -fno-trapping-math -ftree-vectorize -fno-math-errno -O3 -DNDEBUG -Wno-shadow
 

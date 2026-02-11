@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/neutrino.dir/DetectorConstruction.cc.o.d"
   "CMakeFiles/neutrino.dir/DetectorMessenger.cc.o"
   "CMakeFiles/neutrino.dir/DetectorMessenger.cc.o.d"
+  "CMakeFiles/neutrino.dir/EventAction.cc.o"
+  "CMakeFiles/neutrino.dir/EventAction.cc.o.d"
   "CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o"
   "CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o.d"
   "CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o"

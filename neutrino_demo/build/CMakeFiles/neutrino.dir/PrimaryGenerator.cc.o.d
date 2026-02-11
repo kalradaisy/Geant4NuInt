@@ -267,6 +267,59 @@ CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o: \
  /usr/local/include/Geant4/G4AllocatorPool.hh \
  /usr/local/include/Geant4/G4PrimaryParticle.hh \
  /usr/local/include/Geant4/G4ParticleMomentum.hh \
+ /usr/local/include/Geant4/G4ThreeVector.hh \
+ /workspace/neutrino_demo/RunAction.hh \
+ /usr/local/include/Geant4/G4UserRunAction.hh /opt/root/include/TFile.h \
+ /opt/root/include/Compression.h /opt/root/include/RtypesCore.h \
+ /opt/root/include/ROOT/RConfig.hxx /opt/root/include/ROOT/../RVersion.h \
+ /opt/root/include/RConfigure.h /opt/root/include/DllImport.h \
+ /opt/root/include/TDirectoryFile.h /opt/root/include/TDirectory.h \
+ /opt/root/include/TNamed.h /opt/root/include/TObject.h \
+ /opt/root/include/Rtypes.h /opt/root/include/strtok.h \
+ /opt/root/include/strlcpy.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h /opt/root/include/snprintf.h \
+ /opt/root/include/TGenericClassInfo.h /opt/root/include/TSchemaHelper.h \
+ /opt/root/include/TIsAProxy.h /opt/root/include/TVirtualIsAProxy.h \
+ /opt/root/include/TStorage.h /opt/root/include/TVersionCheck.h \
+ /opt/root/include/RVersion.h /opt/root/include/TString.h \
+ /opt/root/include/TMathBase.h /opt/root/include/ROOT/RStringView.hxx \
+ /opt/root/include/ROOT/TypeTraits.hxx /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/backward/auto_ptr.h \
+ /usr/include/c++/11/pstl/glue_memory_defs.h /usr/include/c++/11/cstdarg \
+ /opt/root/include/TClass.h /opt/root/include/TDictionary.h \
+ /opt/root/include/ESTLType.h /opt/root/include/TObjArray.h \
+ /opt/root/include/TSeqCollection.h /opt/root/include/TCollection.h \
+ /opt/root/include/TIterator.h /opt/root/include/TVirtualRWMutex.h \
+ /opt/root/include/TVirtualMutex.h /opt/root/include/ROOT/RRangeCast.hxx \
+ /opt/root/include/ROOT/RSpan.hxx /opt/root/include/ROOT/span.hxx \
+ /usr/include/c++/11/iterator /usr/include/c++/11/bits/stream_iterator.h \
+ /usr/include/c++/11/cassert /usr/include/assert.h \
+ /usr/include/c++/11/unordered_set \
+ /usr/include/c++/11/bits/unordered_set.h /opt/root/include/TUUID.h \
+ /opt/root/include/TList.h /opt/root/include/TBuffer.h \
+ /opt/root/include/TDataType.h /opt/root/include/Bytes.h \
+ /opt/root/include/Byteswap.h /opt/root/include/TDatime.h \
+ /opt/root/include/TUrl.h /opt/root/include/ROOT/RConcurrentHashColl.hxx \
+ /opt/root/include/Rtypes.h /opt/root/include/ROOT/TRWSpinLock.hxx \
+ /opt/root/include/ROOT/TSpinMutex.hxx /opt/root/include/TTree.h \
+ /opt/root/include/ROOT/TIOFeatures.hxx /opt/root/include/TArrayD.h \
+ /opt/root/include/TArray.h /opt/root/include/TArrayI.h \
+ /opt/root/include/TAttFill.h /opt/root/include/TAttLine.h \
+ /opt/root/include/TAttMarker.h /opt/root/include/TVirtualTreePlayer.h \
+ /opt/root/include/TBranch.h /opt/root/include/TBranchCacheInfo.h \
+ /opt/root/include/TBits.h /usr/local/include/Geant4/G4ParticleTable.hh \
+ /usr/local/include/Geant4/G4ParticleTableIterator.hh \
+ /usr/local/include/Geant4/G4ParticleTable.icc \
  /usr/local/include/Geant4/G4Event.hh \
  /usr/local/include/Geant4/evtdefs.hh \
  /usr/local/include/Geant4/G4HCofThisEvent.hh \
@@ -279,86 +332,8 @@ CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o: \
  /usr/local/include/Geant4/G4Profiler.hh \
  /usr/local/include/Geant4/G4Profiler.icc \
  /usr/local/include/Geant4/PTL/Globals.hh \
- /usr/local/include/Geant4/PTL/Types.hh /usr/include/c++/11/memory \
- /usr/include/c++/11/bits/stl_raw_storage_iter.h \
- /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
- /usr/include/c++/11/bits/shared_ptr_atomic.h \
- /usr/include/c++/11/backward/auto_ptr.h \
- /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /usr/local/include/Geant4/PTL/Types.hh \
  /usr/local/include/Geant4/PTL/Utility.hh /usr/include/c++/11/set \
  /usr/include/c++/11/bits/stl_set.h \
  /usr/include/c++/11/bits/stl_multiset.h \
- /usr/local/include/Geant4/G4ThreeVector.hh \
- /usr/local/include/Geant4/G4SystemOfUnits.hh \
- /usr/local/include/Geant4/G4ParticleTable.hh \
- /usr/local/include/Geant4/G4ParticleTableIterator.hh \
- /usr/local/include/Geant4/G4ParticleTable.icc \
- /usr/local/include/Geant4/G4AnalysisManager.hh \
- /usr/local/include/Geant4/G4GenericAnalysisManager.hh \
- /usr/local/include/Geant4/G4ToolsAnalysisManager.hh \
- /usr/local/include/Geant4/G4VAnalysisManager.hh \
- /usr/local/include/Geant4/G4AnalysisManagerState.hh \
- /usr/local/include/Geant4/G4AnalysisVerbose.hh \
- /usr/include/c++/11/fstream \
- /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
- /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
- /usr/include/c++/11/bits/fstream.tcc \
- /usr/local/include/Geant4/G4VAnalysisManager.icc \
- /usr/local/include/Geant4/G4HnManager.hh \
- /usr/local/include/Geant4/G4BaseAnalysisManager.hh \
- /usr/local/include/Geant4/G4Fcn.hh \
- /usr/local/include/Geant4/G4BinScheme.hh \
- /usr/local/include/Geant4/G4HnInformation.hh \
- /usr/local/include/Geant4/G4AnalysisUtilities.hh \
- /usr/local/include/Geant4/G4NtupleBookingManager.hh \
- /usr/local/include/Geant4/tools/ntuple_booking \
- /usr/local/include/Geant4/tools/cids /usr/local/include/Geant4/tools/cid \
- /usr/local/include/Geant4/tools/typedefs \
- /usr/local/include/Geant4/tools/forit \
- /usr/local/include/Geant4/G4NtupleBookingManager.icc \
- /usr/local/include/Geant4/G4VH1Manager.hh \
- /usr/local/include/Geant4/G4VH2Manager.hh \
- /usr/local/include/Geant4/G4VH3Manager.hh \
- /usr/local/include/Geant4/G4VP1Manager.hh \
- /usr/local/include/Geant4/G4VP2Manager.hh \
- /usr/local/include/Geant4/G4VNtupleManager.hh \
- /usr/local/include/Geant4/G4VFileManager.hh \
- /usr/local/include/Geant4/G4BaseFileManager.hh \
- /usr/local/include/Geant4/G4VTHnFileManager.hh \
- /usr/local/include/Geant4/G4ToolsAnalysisMessenger.hh \
- /usr/local/include/Geant4/G4UImessenger.hh \
- /usr/local/include/Geant4/G4UIdirectory.hh \
- /usr/local/include/Geant4/G4UIcommand.hh \
- /usr/local/include/Geant4/G4UIparameter.hh \
- /usr/local/include/Geant4/G4UItokenNum.hh \
- /usr/local/include/Geant4/G4ApplicationState.hh \
- /usr/local/include/Geant4/G4THnManager.hh \
- /usr/local/include/Geant4/G4THnManager.icc \
- /usr/local/include/Geant4/tools/histo/h1d \
- /usr/local/include/Geant4/tools/histo/h1 \
- /usr/local/include/Geant4/tools/histo/b1 \
- /usr/local/include/Geant4/tools/histo/base_histo \
- /usr/local/include/Geant4/tools/histo/histo_data \
- /usr/local/include/Geant4/tools/histo/axes \
- /usr/local/include/Geant4/tools/histo/axis \
- /usr/local/include/Geant4/tools/eqT \
- /usr/local/include/Geant4/tools/histo/h2d \
- /usr/local/include/Geant4/tools/histo/h2 \
- /usr/local/include/Geant4/tools/histo/b2 \
- /usr/local/include/Geant4/tools/histo/h3d \
- /usr/local/include/Geant4/tools/histo/h3 \
- /usr/local/include/Geant4/tools/histo/b3 \
- /usr/local/include/Geant4/tools/histo/p1d \
- /usr/local/include/Geant4/tools/histo/p1 \
- /usr/local/include/Geant4/tools/histo/profile_data \
- /usr/local/include/Geant4/tools/histo/p2d \
- /usr/local/include/Geant4/tools/histo/p2 \
- /usr/local/include/Geant4/G4ToolsAnalysisManager.icc \
- /usr/local/include/Geant4/G4H1ToolsManager.hh \
- /usr/local/include/Geant4/G4H2ToolsManager.hh \
- /usr/local/include/Geant4/G4H3ToolsManager.hh \
- /usr/local/include/Geant4/G4P1ToolsManager.hh \
- /usr/local/include/Geant4/G4P2ToolsManager.hh \
- /usr/local/include/Geant4/G4GenericAnalysisManager.icc \
- /usr/local/include/Geant4/G4GenericFileManager.hh \
- /usr/local/include/Geant4/G4GenericFileManager.icc
+ /usr/local/include/Geant4/G4SystemOfUnits.hh
