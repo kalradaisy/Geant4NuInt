@@ -20,7 +20,7 @@ geant4-source and build directories are not included and are downloaded
 inside the container.
 
 ## Building the Docker Image
-# docker build --platform linux/amd64 -t geant4-clean .
+**docker build --platform linux/amd64 -t geant4-clean . **
 ## Running the Container
 docker run -it --rm -v "$PWD":/workspace geant4-clean bash
 
