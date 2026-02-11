@@ -28,6 +28,8 @@ jobs:
       - name: Run executable with input file
         run: |
           pwd; ls -lrt
+          ldconfig
+          ldd ./build/neutrino
           ./build/neutrino neutrino_demo/run.mac
           pwd; ls -lrt
       
@@ -48,14 +50,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: executable
-          path: ./build
+      # - name: Download build artifacts
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: executable
+      #     path: ./build
       
-      - name: Make executable runnable
-        run: chmod +x ./build/neutrino
+      # - name: Make executable runnable
+      #   run: chmod +x ./build/neutrino
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
