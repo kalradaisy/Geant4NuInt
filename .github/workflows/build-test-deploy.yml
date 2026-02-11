@@ -17,15 +17,19 @@ jobs:
           mkdir -p build
           cd build
           cmake ../neutrino_demo/
+          pwd; ls -lrt
       
       - name: Build
         run: |
           cd build
           cmake --build . 
+          pwd; ls -lrt
       
       - name: Run executable with input file
         run: |
+          pwd; ls -lrt
           ./build/neutrino neutrino_demo/run.mac
+          pwd; ls -lrt
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -79,18 +83,15 @@ jobs:
           cat > Dockerfile << 'EOF'
           FROM ghcr.io/lobis/root-geant4-garfield:cpp17_root-v6-26-10_geant4-v11.1.0_garfield-e0a9f171
           
-          # Copy the executable
-          COPY build/neutrino /usr/local/bin/neutrino
-          RUN chmod +x /usr/local/bin/neutrino
-          
           # Set working directory
           WORKDIR /app
           
-          # Copy any necessary configuration files
+          # Copy and build
           COPY neutrino_demo/ /app/neutrino_demo/
-          
+          RUN cmake ./neutrino_demo/ && cmake --build . 
+
           # Set the entrypoint to the executable
-          ENTRYPOINT ["/usr/local/bin/neutrino"]
+          ENTRYPOINT ["/app/neutrino"]
           EOF
       
       - name: Build and push Docker image
