@@ -53,6 +53,5 @@ jobs:
     
     - name: Run executable with input file
       run: |
-        ./build/neutrino neutrino_demo/vis.mac
+        ./build/neutrino neutrino_demo/run.mac
 
-        
