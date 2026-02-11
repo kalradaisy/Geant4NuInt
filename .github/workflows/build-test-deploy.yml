@@ -92,6 +92,7 @@ jobs:
           # Copy and build
           COPY neutrino_demo/ /app/neutrino_demo/
           RUN cmake ./neutrino_demo/ && cmake --build . 
+          RUN strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
 
           # Set the entrypoint to the executable
           ENTRYPOINT ["/app/neutrino"]
