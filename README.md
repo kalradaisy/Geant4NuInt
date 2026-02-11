@@ -30,38 +30,49 @@ Inside the container, initialize Geant4:
 
 ## Downloading Geant4 Source
 Inside the container:
-cd /workspace
-git clone --branch v11.0.4 https://gitlab.cern.ch/geant4/geant4.git geant4-source
-## Building Geant4
-cd /workspace
-mkdir build
-cd build
 
-cmake ../geant4-source \
+**cd /workspace**
+
+**git clone --branch v11.0.4 https://gitlab.cern.ch/geant4/geant4.git geant4-source**
+
+## Building Geant4
+**cd /workspace**
+
+**mkdir build**
+
+**cd build**
+
+**cmake ../geant4-source \
   -DCMAKE_INSTALL_PREFIX=/opt/geant4-install \
   -DGEANT4_USE_GDML=ON \
   -DGEANT4_INSTALL_DATA=ON \
   -DGEANT4_USE_OPENGL_X11=ON \
-  -DGEANT4_USE_QT=OFF
+  -DGEANT4_USE_QT=OFF**
 
-make -j4
-make install
+**make -j4**
+
+**make install**
 
 Reload environment:
-source /opt/geant4-install/bin/geant4.sh
+
+**source /opt/geant4-install/bin/geant4.sh**
 
 ## Building the Neutrino Demo
-cd /workspace/neutrino_demo
-mkdir build
-cd build
+**cd /workspace/neutrino_demo**
 
-cmake ../
-make -j4
+**mkdir build**
+
+**cd build**
+
+**cmake ../**
+
+**make -j4**
 
 ## Running the Simulation
-./neutrino ../run.mac
+**./neutrino ../run.mac**
 
 ## Installing optional tools
 apt update -y
+
 apt install -y emacs libxerces-c-dev
 
