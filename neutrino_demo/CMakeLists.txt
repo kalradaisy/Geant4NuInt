@@ -10,7 +10,7 @@ include_directories(${ROOT_INCLUDE_DIRS})
 # --------------------
 # Find Geant4
 # --------------------
-find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(Geant4 REQUIRED)
 include(${Geant4_USE_FILE})
 
 # --------------------
