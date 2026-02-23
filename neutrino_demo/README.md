@@ -1,4 +1,4 @@
-# Geant4MuC
+# Geant4NuInt
 # Geant4 Neutrino Simulation with Docker
 This repository provides a Docker-based environment for building and running
 a Geant4 neutrino simulation example. The setup ensures reproducibility and
