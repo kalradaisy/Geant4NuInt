@@ -1,8 +1,14 @@
-build/
-*.o
-*.so
+# temp files
+#*#
 *~
+
+# build / compiled
 *.out
-CMakeFiles/
-cmake_install.cmake
-Makefile
+*.o
+*.exe
+
+# Geant4 output
+*.root
+
+# macOS
+.DS_Store

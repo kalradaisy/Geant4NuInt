@@ -21,15 +21,17 @@
 #include "G4PhysListFactory.hh"
 #include "G4VModularPhysicsList.hh"
 #include "SteppingAction.hh"
+//#include "ActionInitialization.hh"
+#include "G4EmExtraPhysics.hh"
 
 
 int main(int argc, char** argv) {
 
-  //G4PhysListFactory factory;
-   //    auto available = factory.AvailablePhysLists();
-   //for (auto& name : available) {
-   //   std::cout << name << std::endl;
-   // }
+  G4PhysListFactory factory;
+       auto available = factory.AvailablePhysLists();
+   for (auto& name : available) {
+      std::cout << name << std::endl;
+    }
 
   // Create the run manager
     G4RunManager* runManager = new G4RunManager;
@@ -39,37 +41,33 @@ int main(int argc, char** argv) {
     runManager->SetUserInitialization(detector);
 
     // 3. Physics list (QGSP_BERT + neutrino physics)
-    G4PhysListFactory factory;
-    G4VModularPhysicsList* physics = factory.GetReferencePhysList("NuBeam");
- 
-    //   G4VModularPhysicsList* physics = factory.GetReferencePhysList("QGSP_BERT");
-    //physics->RegisterPhysics(new MyNeutrinoPhysics());
+    //    G4PhysListFactory factory;
+    G4VModularPhysicsList* physics = factory.GetReferencePhysList("FTFP_BERT"); // FTFP_BERT"); //NuBeam");
+    physics->RegisterPhysics(new G4EmExtraPhysics());
     runManager->SetUserInitialization(physics);
+
+    //  runManager->SetUserInitialization(
+    //   new ActionInitialization()
+    //);
+
+
     
     // Run action (must be created before PrimaryGenerator if PG uses its TTree)
-    auto runAction = new RunAction();
+     auto runAction = new RunAction();
     runManager->SetUserAction(runAction);
 
-    // Primary generator, pass runAction pointer
-    auto primary = new PrimaryGenerator(runAction);
-    runManager->SetUserAction(primary);
-
-    // Attach messenger to allow macro control of primary generator
-    auto messenger = new PrimaryGeneratorMessenger(primary);
-
-    // Event action, pass runAction pointer
-    runManager->SetUserAction(new EventAction(runAction));
-    // SteppingAction
-    runManager->SetUserAction(new SteppingAction(runAction));
+     auto eventAction = new EventAction(runAction);
+    runManager->SetUserAction(eventAction);
 
     
-    //  G4String dataPath = "/opt/geant4-nu-n/share/Geant4-11.0.4/data";
-    //    G4NuclideTable::GetNuclideTable()->SetDataDirectory(dataPath); // optional for radioactive decay
+    // Primary generator, pass runAction pointer
+    auto primary = new PrimaryGenerator(runAction);
+    auto messenger = new PrimaryGeneratorMessenger(primary);
+    runManager->SetUserAction(primary);
 
-
-      
-    // Initialize Geant4
-    //    runManager->Initialize();
+    //    auto messenger = new PrimaryGeneratorMessenger(primary);
+    //runManager->SetUserAction(new EventAction(runAction));
+    runManager->SetUserAction(new SteppingAction(eventAction, runAction));
 
     // UI / macro execution
     G4UImanager* uiManager = G4UImanager::GetUIpointer();

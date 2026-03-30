@@ -99,16 +99,19 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     for (auto lv : *lvStore) {
 
-        G4cout << "Logical volume: " << lv->GetName() << G4endl;
+      //G4cout << "Logical volume: " << lv->GetName() << G4endl;
 
         // Select your detector volume
-        if (lv->GetName() == "VertexBarrel_layer0_sens") {
-
+	//        if (lv->GetName() == "VertexBarrel_layer0_sens") {
+        if (lv->GetName().find("_sens") != std::string::npos) {
+	  // if (lv == world->GetLogicalVolume()){
+	  //continue;   // Skip world
+	  // }
             targetRegion->AddRootLogicalVolume(lv);
 
             G4cout << ">>> Neutrino target set on: "
                    << lv->GetName() << G4endl;
-        }
+	     }
     }
 
     G4cout << "===============================\n" << G4endl;

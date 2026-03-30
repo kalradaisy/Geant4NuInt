@@ -1,78 +1,114 @@
 #include "PrimaryGenerator.hh"
-#include "RunAction.hh"
 #include "G4ParticleTable.hh"
 #include "G4Event.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4ParticleGun.hh"
+#include "RunAction.hh"
 #include "TTree.h"
+#include "PrimaryGeneratorMessenger.hh"
+#include "G4RunManager.hh"
+#include "CLHEP/Units/PhysicalConstants.h"
 
+/*
+e-
+e+
+gamma
+proton
+neutron
+pi+
+pi-
+pi0
+mu-
+mu+
+kaon+
+*/
 PrimaryGenerator::PrimaryGenerator(RunAction* runAction)
 : fRunAction(runAction)
 {
-    // Create a particle gun with 1 particle per event
     fParticleGun = new G4ParticleGun(1);
+    fMessenger = new PrimaryGeneratorMessenger(this);
 
-    // Default particle and energy
-    fParticleName = "nu_mu";          // default particle
-    fEnergy = 1.0 * CLHEP::GeV;       // use CLHEP::GeV
-    //    fPosition = G4ThreeVector(0, 0, -1 * CLHEP::cm);
-    fPosition = G4ThreeVector(0, 0,0);
-    // Initialize particle gun
-    G4ParticleDefinition* particle
-        = G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
-    fParticleGun->SetParticleDefinition(particle);
-    fParticleGun->SetParticleEnergy(fEnergy);
-    fParticleGun->SetParticlePosition(fPosition);
+    // Default values (can be overridden by macro)
+    fParticleName = "nu_e";             
+    fEnergy = 20.0*GeV;
+    fPosition = G4ThreeVector(0,0,0*cm);
+    fDirection = G4ThreeVector(0,0,0);
 }
 
-PrimaryGenerator::~PrimaryGenerator()
-{
+PrimaryGenerator::~PrimaryGenerator() {
     delete fParticleGun;
+    delete fMessenger;
 }
 
 void PrimaryGenerator::GeneratePrimaries(G4Event* event)
 {
-
-      auto table = G4ParticleTable::GetParticleTable();
-
-  // Update particle definition in case messenger changed it
-      G4ParticleDefinition* particle
-       = G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
-if (!particle) {
-        G4cout << "ERROR: Particle not found: "
-               << fParticleName << G4endl;
-
-        table->DumpTable();   // show what exists
-        G4Exception("PrimaryGenerator",
-                    "NoParticle",
-                    FatalException,
-                    "Requested particle not in table");
+    // Get particle
+    if(fParticleName.empty()) {
+        G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                    "Particle name not set.");
     }
 
+    auto particle =
+      G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
+
+    if(!particle) {
+        G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                    ("Particle not found: "+fParticleName).c_str());
+    }
+
+    // -----------------------------
+    // 1) Random direction (4pi)
+    // -----------------------------
+    double costh = 2.0*G4UniformRand() - 1.0;
+    double sinth = std::sqrt(1.0 - costh*costh);
+    double phi   = 2.0*CLHEP::pi*G4UniformRand();
+
+    G4ThreeVector dir(
+        sinth*std::cos(phi),
+        sinth*std::sin(phi),
+        costh
+    );
+
+    // -----------------------------
+    // 2) Beam spot (optional)
+    // -----------------------------
+    /* double sx = 0.01*cm;
+    double sy = 0.01*cm;
+    double sz = 5.0*cm;
+
+    double x = G4RandGauss::shoot(0., sx);
+    double y = G4RandGauss::shoot(0., sy);
+    double z = G4RandGauss::shoot(0., sz);
+
+    G4ThreeVector pos(x,y,z);
+    */
+    
+    // -----------------------------
+    // 3) Energy (optional)
+    // -----------------------------
+     double E = 0.2*GeV + G4UniformRand()*4.8*GeV;
+       //      double E = fEnergy;
 
 
+     //double zMin = -20*cm, zMax = 2*cm;
+     //double xMin = -2*cm, xMax = 2*cm;
+     //double yMin = -2*cm, yMax = 2*cm;
 
+    //       fPosition = G4ThreeVector(
+    //			      xMin + G4UniformRand()*(xMax-xMin),
+    //			      yMin + G4UniformRand()*(yMax-yMin),
+    //			      zMin + G4UniformRand()*(zMax-zMin)
+    ///			      );
+    
+    
+    // -----------------------------
+    // 4) Set gun
+    // -----------------------------
     fParticleGun->SetParticleDefinition(particle);
     fParticleGun->SetParticleEnergy(fEnergy);
     fParticleGun->SetParticlePosition(fPosition);
+    fParticleGun->SetParticleMomentumDirection(dir);
 
-    // Shoot particle
     fParticleGun->GeneratePrimaryVertex(event);
-
-    // Fill TTree in RunAction if available
-    if (fRunAction && fRunAction->GetTree()) {
-        TTree* tree = fRunAction->GetTree();
-
-        // Store initial particle info
-        Double_t E = fEnergy;
-        Double_t x = fPosition.x();
-        Double_t y = fPosition.y();
-        Double_t z = fPosition.z();
-        Double_t finalE = 0.0;
-        Double_t finalX = 0.0;
-        Double_t finalY = 0.0;
-        Double_t finalZ = 0.0;
-
-        tree->Fill();  // Note: We'll assume tree has branches bound to RunAction member variables
-    }
 }
+
+
