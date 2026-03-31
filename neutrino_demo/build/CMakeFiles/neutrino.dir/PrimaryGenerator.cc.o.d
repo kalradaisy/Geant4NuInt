@@ -345,7 +345,7 @@ CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o: \
  /opt/geant4-install/include/Geant4/G4ApplicationState.hh \
  /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
  /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
- /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+ /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
  /opt/geant4-install/include/Geant4/G4RunManager.hh \
  /usr/include/c++/11/list /usr/include/c++/11/bits/stl_list.h \
  /usr/include/c++/11/bits/list.tcc \

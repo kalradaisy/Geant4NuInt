@@ -3464,7 +3464,7 @@ CMakeFiles/neutrino.dir/PrimaryGenerator.cc.o: ../PrimaryGenerator.cc \
   /opt/geant4-install/include/Geant4/G4ApplicationState.hh \
   /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
   /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
-  /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+  /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
   /opt/geant4-install/include/Geant4/G4RunManager.hh \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
@@ -3973,7 +3973,7 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: ../PrimaryGeneratorMesse
   /opt/geant4-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
   /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
   /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
-  /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+  /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
   ../PrimaryGenerator.hh \
   /opt/geant4-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh \
   /opt/geant4-install/include/Geant4/G4ParticleGun.hh \
@@ -4092,7 +4092,8 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: ../PrimaryGeneratorMesse
   /opt/root/include/TVirtualTreePlayer.h \
   /opt/root/include/TBranch.h \
   /opt/root/include/TBranchCacheInfo.h \
-  /opt/root/include/TBits.h
+  /opt/root/include/TBits.h \
+  /opt/geant4-install/include/Geant4/G4UIdirectory.hh
 
 CMakeFiles/neutrino.dir/RunAction.cc.o: ../RunAction.cc \
   /usr/include/stdc-predef.h \
@@ -6177,7 +6178,7 @@ CMakeFiles/neutrino.dir/main.cc.o: ../main.cc \
   /opt/geant4-install/include/Geant4/G4UImessenger.hh \
   /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
   /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
-  /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+  /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
   ../EventAction.hh \
   /opt/geant4-install/include/Geant4/G4UserEventAction.hh \
   /opt/geant4-install/include/Geant4/G4Event.hh \
@@ -6662,6 +6663,8 @@ CMakeFiles/neutrino.dir/main.cc.o: ../main.cc \
 /usr/include/xercesc/util/XercesDefs.hpp:
 
 /opt/geant4-install/include/Geant4/G4JPsi.hh:
+
+/opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh:
 
 /opt/geant4-install/include/Geant4/G4Box.hh:
 
@@ -7152,8 +7155,6 @@ CMakeFiles/neutrino.dir/main.cc.o: ../main.cc \
 /opt/geant4-install/include/Geant4/G4VUPLSplitter.hh:
 
 /usr/include/c++/11/tr1/gamma.tcc:
-
-/opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 

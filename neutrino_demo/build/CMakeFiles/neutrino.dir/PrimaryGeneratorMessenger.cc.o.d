@@ -247,7 +247,7 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
  /opt/geant4-install/include/Geant4/CLHEP/Vector/ThreeVector.icc \
  /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
  /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
- /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+ /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
  /workspace/neutrino_demo/PrimaryGenerator.hh \
  /opt/geant4-install/include/Geant4/G4VUserPrimaryGeneratorAction.hh \
  /opt/geant4-install/include/Geant4/G4ParticleGun.hh \
@@ -326,4 +326,5 @@ CMakeFiles/neutrino.dir/PrimaryGeneratorMessenger.cc.o: \
  /opt/root/include/TAttFill.h /opt/root/include/TAttLine.h \
  /opt/root/include/TAttMarker.h /opt/root/include/TVirtualTreePlayer.h \
  /opt/root/include/TBranch.h /opt/root/include/TBranchCacheInfo.h \
- /opt/root/include/TBits.h
+ /opt/root/include/TBits.h \
+ /opt/geant4-install/include/Geant4/G4UIdirectory.hh

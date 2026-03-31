@@ -1,0 +1,141 @@
+#include "PrimaryGenerator.hh"
+#include "G4ParticleTable.hh"
+#include "G4Event.hh"
+#include "G4SystemOfUnits.hh"
+#include "RunAction.hh"
+#include "TTree.h"
+#include "PrimaryGeneratorMessenger.hh"
+#include "G4RunManager.hh"
+
+PrimaryGenerator::PrimaryGenerator(RunAction* runAction)
+: fRunAction(runAction)
+{
+    fParticleGun = new G4ParticleGun(1);
+    fMessenger = new PrimaryGeneratorMessenger(this);
+
+    // Default values (can be overridden by macro)
+    fParticleName = "e-";              // leave empty so macro must set it
+    fEnergy = 10.0*MeV;
+    fPosition = G4ThreeVector(0,0,-220*cm);
+    fDirection = G4ThreeVector(0,0,1);
+}
+
+PrimaryGenerator::~PrimaryGenerator() {
+    delete fParticleGun;
+    delete fMessenger;
+}
+
+void PrimaryGenerator::GeneratePrimaries(G4Event* event) {
+    // Must have particle name set
+    if(fParticleName.empty()) {
+        G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                    "Particle name not set. Use /gun/particle in macro.");
+    }
+
+    G4ParticleDefinition* particle =
+        G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
+
+    if(!particle) {
+        G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                    ("Particle not found: "+fParticleName).c_str());
+    }
+
+    fParticleGun->SetParticleDefinition(particle);
+    fParticleGun->SetParticleEnergy(fEnergy);
+    fParticleGun->SetParticlePosition(fPosition);
+    fParticleGun->SetParticleMomentumDirection(fDirection.unit());
+
+    fParticleGun->GeneratePrimaryVertex(event);
+ 
+    G4cout << "Generating particle: " << fParticleName
+       << " E=" << fEnergy/MeV << " MeV"
+       << " dir=" << fDirection << " pos=" << fPosition << G4endl;
+
+    //     G4RunManager::GetRunManager()->ReinitializeGeometry();
+
+    // Optional: fill TTree
+    if(fRunAction && fRunAction->GetTree()) {
+        fRunAction->E = fEnergy;
+        fRunAction->x = fPosition.x();
+        fRunAction->y = fPosition.y();
+        fRunAction->z = fPosition.z();
+        fRunAction->finalE = 0.;
+        fRunAction->finalX = 0.;
+        fRunAction->finalY = 0.;
+        fRunAction->finalZ = 0.;
+        fRunAction->GetTree()->Fill();
+    }
+}
+/*
+void PrimaryGenerator::GeneratePrimaries(G4Event* event) {
+    G4ParticleDefinition* particle =
+        G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
+    fParticleGun->SetParticleDefinition(particle);
+    fParticleGun->SetParticleEnergy(fEnergy);
+    fParticleGun->SetParticlePosition(fPosition);
+    fParticleGun->SetParticleMomentumDirection(fDirection.unit());
+
+    fParticleGun->GeneratePrimaryVertex(event);
+
+    // Optional: fill RunAction TTree
+    if(fRunAction && fRunAction->GetTree()) {
+        fRunAction->E = fEnergy;
+        fRunAction->x = fPosition.x();
+        fRunAction->y = fPosition.y();
+        fRunAction->z = fPosition.z();
+        fRunAction->finalE = 0.;
+        fRunAction->finalX = 0.;
+        fRunAction->finalY = 0.;
+        fRunAction->finalZ = 0.;
+        fRunAction->GetTree()->Fill();
+    }
+}
+
+
+void PrimaryGenerator::GeneratePrimaries(G4Event* event)
+{
+
+      auto table = G4ParticleTable::GetParticleTable();
+
+  // Update particle definition in case messenger changed it
+      G4ParticleDefinition* particle
+       = G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
+if (!particle) {
+        G4cout << "ERROR: Particle not found: "
+               << fParticleName << G4endl;
+
+        table->DumpTable();   // show what exists
+        G4Exception("PrimaryGenerator",
+                    "NoParticle",
+                    FatalException,
+                    "Requested particle not in table");
+    }
+
+
+
+
+    fParticleGun->SetParticleDefinition(particle);
+    fParticleGun->SetParticleEnergy(fEnergy);
+    fParticleGun->SetParticlePosition(fPosition);
+
+    // Shoot particle
+    fParticleGun->GeneratePrimaryVertex(event);
+
+    // Fill TTree in RunAction if available
+    if (fRunAction && fRunAction->GetTree()) {
+        TTree* tree = fRunAction->GetTree();
+
+        // Store initial particle info
+        Double_t E = fEnergy;
+        Double_t x = fPosition.x();
+        Double_t y = fPosition.y();
+        Double_t z = fPosition.z();
+        Double_t finalE = 0.0;
+        Double_t finalX = 0.0;
+        Double_t finalY = 0.0;
+        Double_t finalZ = 0.0;
+
+        tree->Fill();  // Note: We'll assume tree has branches bound to RunAction member variables
+    }
+}
+*/

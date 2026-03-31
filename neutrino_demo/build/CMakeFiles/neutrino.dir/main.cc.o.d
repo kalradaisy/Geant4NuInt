@@ -898,7 +898,7 @@ CMakeFiles/neutrino.dir/main.cc.o: /workspace/neutrino_demo/main.cc \
  /opt/geant4-install/include/Geant4/G4UImessenger.hh \
  /opt/geant4-install/include/Geant4/G4UIcmdWithAString.hh \
  /opt/geant4-install/include/Geant4/G4UIcmdWithADoubleAndUnit.hh \
- /opt/geant4-install/include/Geant4/G4UIcmdWith3VectorAndUnit.hh \
+ /opt/geant4-install/include/Geant4/G4UIcmdWith3Vector.hh \
  /workspace/neutrino_demo/EventAction.hh \
  /opt/geant4-install/include/Geant4/G4UserEventAction.hh \
  /opt/geant4-install/include/Geant4/G4Event.hh \
