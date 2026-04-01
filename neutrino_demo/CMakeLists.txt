@@ -10,7 +10,7 @@ include_directories(${ROOT_INCLUDE_DIRS})
 # --------------------
 # Find Geant4
 # --------------------
-find_package(Geant4 REQUIRED)
+find_package(Geant4 REQUIRED ui_all vis_all)
 include(${Geant4_USE_FILE})
 
 # --------------------
@@ -21,10 +21,16 @@ set(SOURCES
     DetectorMessenger.cc
     PrimaryGenerator.cc
     PrimaryGeneratorMessenger.cc
+    MyNeutrinoPhysics.cc
+    MyPhysicsList.cc
     RunAction.cc
     EventAction.cc
+    SteppingAction.cc
     main.cc
 )
+#set(HEADERS
+#  MyPhysicsList.hh
+#  )
 
 # --------------------
 # Executable

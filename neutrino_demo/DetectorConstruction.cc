@@ -5,17 +5,32 @@
 #include "G4RunManager.hh"
 #include "G4GDMLParser.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Region.hh"
+#include "G4LogicalVolumeStore.hh"
+#include "G4UserLimits.hh"
 
-#include "G4NistManager.hh"
-#include "G4Material.hh"
-#include "G4Box.hh"
-#include "G4LogicalVolume.hh"
-#include "G4PVPlacement.hh"
-#include "G4ThreeVector.hh"
 
 DetectorConstruction::DetectorConstruction()
 {
     fMessenger = new DetectorMessenger(this);
+    // Load default GDML immediately so Construct() can return a valid world
+    G4String defaultGDML = "/workspace/neutrino_demo/output.gdml";
+    G4cout << "Loading default GDML: " << defaultGDML << G4endl;
+
+    fParser.Read(defaultGDML, false); // false disables schema validation
+
+    G4VPhysicalVolume* world = fParser.GetWorldVolume();
+    if (!world) {
+        G4cerr << "Failed to load default GDML world volume!" << G4endl;
+        G4Exception("DetectorConstruction::DetectorConstruction",
+                    "NoGDML",
+                    FatalException,
+                    "World volume is NULL after reading default GDML.");
+    }
+
+    G4cout << "Default GDML loaded successfully. World volume: "
+           << world->GetName() << G4endl;
+
 }
 
 DetectorConstruction::~DetectorConstruction()
@@ -50,51 +65,56 @@ void DetectorConstruction::ReadGDML(const G4String& filename)
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-    // Always return the currently loaded world volume
     G4VPhysicalVolume* world = fParser.GetWorldVolume();
 
     if (!world) {
-        // Default: empty vacuum box
-        G4NistManager* nist = G4NistManager::Instance();
-        G4Material* vacuum = nist->FindOrBuildMaterial("G4_Galactic");
-
-        G4Box* worldSolid = new G4Box("World", 1.*m, 1.*m, 1.*m);
-        G4LogicalVolume* worldLog = new G4LogicalVolume(worldSolid, vacuum, "World");
-        G4VPhysicalVolume* worldPhys = new G4PVPlacement(
-            nullptr, G4ThreeVector(), worldLog, "World", nullptr, false, 0);
-
-        return worldPhys;
+        G4Exception("DetectorConstruction::Construct()",
+                    "NoGDML",
+                    FatalException,
+                    "World volume is NULL. GDML was not loaded correctly.");
     }
+
+    G4LogicalVolume* worldLogical = world->GetLogicalVolume();
+    if (worldLogical) {
+             G4double minStep = 1.0*mm;  // you can reduce if needed
+      G4UserLimits* stepLimits = new G4UserLimits(minStep);
+      worldLogical->SetUserLimits(stepLimits);
+      G4double maxStep = 10*cm;  // limit max step to 10 cm
+      worldLogical->SetUserLimits(new G4UserLimits(maxStep));
+ 
+      G4cout << "Minimum step size set for world: " << minStep/mm << " mm" << G4endl;
+    } else {
+        G4cerr << "World logical volume not found!" << G4endl;
+    }
+    
+
+    // -----------------------------------------
+    // Create neutrino target region
+    // -----------------------------------------
+    auto targetRegion = new G4Region("target");
+
+    auto lvStore = G4LogicalVolumeStore::GetInstance();
+
+    G4cout << "\n=== Assigning Neutrino Region ===" << G4endl;
+
+    for (auto lv : *lvStore) {
+
+      //G4cout << "Logical volume: " << lv->GetName() << G4endl;
+
+        // Select your detector volume
+	//        if (lv->GetName() == "VertexBarrel_layer0_sens") {
+        if (lv->GetName().find("_sens") != std::string::npos) {
+	  // if (lv == world->GetLogicalVolume()){
+	  //continue;   // Skip world
+	  // }
+            targetRegion->AddRootLogicalVolume(lv);
+
+            G4cout << ">>> Neutrino target set on: "
+                   << lv->GetName() << G4endl;
+	     }
+    }
+
+    G4cout << "===============================\n" << G4endl;
 
     return world;
 }
-
-/*
-class DetectorConstruction : public G4VUserDetectorConstruction {
-public:
-  G4VPhysicalVolume* Construct() override {
-    G4GDMLParser parser;
-    parser.Read("simple_det.gdml");
-    return parser.GetWorldVolume();
-   }
-
-*/
-/*auto nist = G4NistManager::Instance();
-
-        // World
-        G4double worldSize = 1.0*m;
-        G4Material* air = nist->FindOrBuildMaterial("G4_AIR");
-        G4Box* worldSolid = new G4Box("World", worldSize/2, worldSize/2, worldSize/2);
-        G4LogicalVolume* worldLogic = new G4LogicalVolume(worldSolid, air, "World");
-        G4VPhysicalVolume* worldPhys = new G4PVPlacement(nullptr, G4ThreeVector(), worldLogic, "World", nullptr, false, 0);
-
-        // Liquid Argon target
-        G4Material* LAr = nist->FindOrBuildMaterial("G4_lAr");
-        G4double LArSize = 0.5*m;
-        G4Box* LArBox = new G4Box("LArBox", LArSize/2, LArSize/2, LArSize/2);
-        G4LogicalVolume* LArLogic = new G4LogicalVolume(LArBox, LAr, "LArLogic");
-        new G4PVPlacement(nullptr, G4ThreeVector(0,0,0), LArLogic, "LArPhys", worldLogic, false, 0);
-
-        return worldPhys;
-	}*/
-//};

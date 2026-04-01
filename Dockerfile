@@ -1,52 +1,53 @@
-FROM ubuntu:22.04
+ FROM ubuntu:22.04
 
-# Labels (optional but good for metadata)
-LABEL author="Geant4 collaboration"
-LABEL version="Geant4-GDML-Qt5"
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Set environment variables
-ENV G4INSTALL=/opt/geant4
-ENV G4DATA_DIR=$G4INSTALL/share/Geant4/data
-ENV G4LIB_DIR=$G4INSTALL/lib
-ENV PATH=$G4INSTALL/bin:$PATH
-ENV LD_LIBRARY_PATH=$G4INSTALL/lib:$LD_LIBRARY_PATH
-ENV G4GDMLROOT=$G4INSTALL
-
-# Install dependencies and build Geant4
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-        build-essential \
-        cmake \
-        wget \
-        libxerces-c-dev \
-        libexpat1-dev \
-        qtbase5-dev \
-        mesa-utils \
-        libglu1-mesa-dev \
-        freeglut3-dev \
-        mesa-common-dev && \
-    cd /opt && \
-    G4_VERSION=11.4.0 && \
-    wget https://github.com/Geant4/geant4/archive/refs/tags/v${G4_VERSION}.tar.gz && \
-    tar -xf v${G4_VERSION}.tar.gz && \
-    mv geant4-${G4_VERSION} geant4-source && \
-    mkdir -p geant4-build geant4-install && \
-    cd geant4-build && \
-    cmake ../geant4-source \
-        -DCMAKE_INSTALL_PREFIX=/opt/geant4 \
-        -DGEANT4_BUILD_MULTITHREADED=ON \
-        -DGEANT4_USE_GDML=ON \
-        -DGEANT4_USE_SYSTEM_EXPAT=ON \
-        -DGEANT4_USE_SYSTEM_XERCESC=ON \
-        -DGEANT4_INSTALL_DATA=ON \
-        -DGEANT4_INSTALL_EXAMPLES=OFF \
-        -DGEANT4_USE_OPENGL_X11=OFF \
-        -DGEANT4_USE_QT=ON \
-        -DGEANT4_USE_XM=OFF \
-        -DGEANT4_USE_RAYTRACER_X11=OFF && \
-    make -j$(nproc) && \
-    make install && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /opt/v${G4_VERSION}.tar.gz /opt/geant4-source /opt/geant4-build
+    build-essential \
+    cmake \
+    wget \
+    git \
+    gdb \
+    libxerces-c-dev \
+    libexpat1-dev \
+    libgl1-mesa-dev \
+    libxmu-dev \
+    libxi-dev \
+    libmotif-dev \
+    emacs \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set default command / entrypoint
-CMD ["bash"]
+WORKDIR /opt
+
+RUN wget https://root.cern.ch/download/root_v6.28.12.Linux-ubuntu22-x86_64-gcc11.4.tar.gz && \
+    tar -xzf root_v6.28.12.Linux-ubuntu22-x86_64-gcc11.4.tar.gz && \
+    rm root_v6.28.12.Linux-ubuntu22-x86_64-gcc11.4.tar.gz
+    
+# Download Geant4
+RUN wget https://gitlab.cern.ch/geant4/geant4/-/archive/v11.0.4/geant4-v11.0.4.tar.gz \
+ && tar -xzf geant4-v11.0.4.tar.gz
+
+# Build Geant4
+RUN mkdir geant4-build && cd geant4-build && \
+    cmake ../geant4-v11.0.4 \
+      -DCMAKE_BUILD_TYPE=Debug \
+      -DGEANT4_USE_NEUTRINO=ON \
+      -DGEANT4_USE_G4NDL=ON \
+      -DGEANT4_USE_RADIOACTIVE_DECAY=ON \
+      -DGEANT4_BUILD_MULTITHREADED=ON \
+      -DGEANT4_USE_GDML=ON \
+      -DGEANT4_USE_OPENGL_X11=OFF \
+      -DGEANT4_USE_QT=OFF \
+      -DGEANT4_USE_UISESSION=ON \
+      -DGEANT4_INSTALL_DATA=ON \
+      -DCMAKE_INSTALL_PREFIX=/opt/geant4-install \
+ && make -j4 && make install
+
+# Setup environment
+ENV GEANT4_DIR=/opt/geant4-install
+ENV PATH=/opt/geant4-install/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/geant4-install/lib:$LD_LIBRARY_PATH
+
+WORKDIR /workspace
 
