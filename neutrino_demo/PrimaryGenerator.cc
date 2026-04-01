@@ -24,41 +24,55 @@ kaon+
 PrimaryGenerator::PrimaryGenerator(RunAction* runAction)
 : fRunAction(runAction)
 {
-    fParticleGun = new G4ParticleGun(1);
-    auto particle = G4ParticleTable::GetParticleTable()->FindParticle("e-");
+  fMessenger = new PrimaryGeneratorMessenger(this);
+  fParticleGun = new G4ParticleGun(1);
+
+ fParticleName = "nu_mu";          // default particle
+    fEnergy = 1.0 * CLHEP::GeV;       // use CLHEP::GeV
+    //    fPosition = G4ThreeVector(0, 0, -1 * CLHEP::cm);
+    fPosition = G4ThreeVector(0, 0,0);
+    // Initialize particle gun
+    G4ParticleDefinition* particle
+        = G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
     fParticleGun->SetParticleDefinition(particle);
-    //fParticleGun->SetParticleEnergy(1.0*GeV);
-    //fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
+    fParticleGun->SetParticleEnergy(fEnergy);
+    fParticleGun->SetParticlePosition(fPosition);
 
-    fMessenger = new PrimaryGeneratorMessenger(this);
-
-    // Default values (can be overridden by macro)
-    //    fParticleName = "e-";             
-    // fEnergy = 1.0*GeV;
-    //fPosition = G4ThreeVector(0,0,0*cm);
-    fDirection = G4ThreeVector(0,0,0);
+    
+  //auto particle = G4ParticleTable::GetParticleTable()->FindParticle("e-");
+  //fParticleGun->SetParticleDefinition(particle);
+  // fParticleGun->SetParticleEnergy(1.0*GeV);
+  //fParticleGun->SetParticlePosition(G4ThreeVector(0,0,0));
+  
+  //fMessenger = new PrimaryGeneratorMessenger(this);
+  
+  // Default values (can be overridden by macro)
+  //fParticleName = "e-";             
+  //fEnergy = 1.0*GeV;
+  //fPosition = G4ThreeVector(0,0,0*cm);
+  //fDirection = G4ThreeVector(0,0,0);
 }
 
 PrimaryGenerator::~PrimaryGenerator() {
-    delete fParticleGun;
-    delete fMessenger;
+  delete fParticleGun;
+  delete fMessenger;
 }
 
 void PrimaryGenerator::GeneratePrimaries(G4Event* event)
 {
     // Get particle
-  // if(fParticleName.empty()) {
-  //    G4Exception("PrimaryGenerator","NoParticle",FatalException,
-  //                "Particle name not set.");
-  // }
+   if(fParticleName.empty()) {
+      G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                  "Particle name not set.");
+   }
 
-  //auto particle =
-  //   G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
+  auto particle =
+     G4ParticleTable::GetParticleTable()->FindParticle(fParticleName);
 
-  // if(!particle) {
-  //     G4Exception("PrimaryGenerator","NoParticle",FatalException,
-  //                ("Particle not found: "+fParticleName).c_str());
-  // }
+  if(!particle) {
+       G4Exception("PrimaryGenerator","NoParticle",FatalException,
+                  ("Particle not found: "+fParticleName).c_str());
+   }
 
     // Update gun from current variables
     //    fParticleGun->SetParticleDefinition(particle);
@@ -114,12 +128,12 @@ void PrimaryGenerator::GeneratePrimaries(G4Event* event)
     // -----------------------------
     // 4) Set gun
     // -----------------------------
-     //    fParticleGun->SetParticleDefinition(particle);
-     //fParticleGun->SetParticleEnergy(fEnergy);
-     //fParticleGun->SetParticlePosition(fPosition);
+         fParticleGun->SetParticleDefinition(particle);
+     fParticleGun->SetParticleEnergy(fEnergy);
+     fParticleGun->SetParticlePosition(fPosition);
     fParticleGun->SetParticleMomentumDirection(dir);
 
-    //fParticleGun->GeneratePrimaryVertex(event);
+    fParticleGun->GeneratePrimaryVertex(event);
 
 
      // ---- Print info ----

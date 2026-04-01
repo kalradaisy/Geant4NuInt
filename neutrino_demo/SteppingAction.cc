@@ -149,7 +149,7 @@ if(proc1)
             int Z = target->GetZ_asInt();
             int A = target->GetA_asInt();
 
-            G4cout << "Struck nucleus: Z=" << Z << " A=" << A << G4endl;
+	    //            G4cout << "Struck nucleus: Z=" << Z << " A=" << A << G4endl;
 
 	     // Construct PDG code for the nucleus
             int pdg = 1000000000 + 10000*Z + 10*A;

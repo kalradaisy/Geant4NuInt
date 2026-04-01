@@ -14,6 +14,57 @@ EventAction::EventAction(RunAction* runAction)
 
 EventAction::~EventAction() {}
 
+void EventAction::BeginOfEventAction(const G4Event* event)
+{
+    if(!fRunAction) return;
+
+    // Reset variables
+    fRunAction->E = 0;
+    fRunAction->x = 0;
+    fRunAction->y = 0;
+    fRunAction->z = 0;
+
+    fRunAction->px = 0;
+    fRunAction->py = 0;
+    fRunAction->pz = 0;
+
+    fRunAction->theta = 0;
+    fRunAction->phi = 0;
+
+    totalEdep_ = 0;
+    nSteps_ = 0;
+
+    // -----------------------------
+    // Get primary particle info
+    // -----------------------------
+    auto vertex = event->GetPrimaryVertex();
+
+    if(vertex) {
+        auto primary = vertex->GetPrimary();
+
+        if(primary) {
+            fRunAction->E = primary->GetKineticEnergy();
+
+            fRunAction->x = vertex->GetX0();
+            fRunAction->y = vertex->GetY0();
+            fRunAction->z = vertex->GetZ0();
+
+            fRunAction->px = primary->GetPx();
+            fRunAction->py = primary->GetPy();
+            fRunAction->pz = primary->GetPz();
+
+            G4ThreeVector p(primary->GetPx(),
+                            primary->GetPy(),
+                            primary->GetPz());
+
+            fRunAction->theta = p.theta();
+            fRunAction->phi   = p.phi();
+        }
+    }
+}
+
+/*
+
 void EventAction::BeginOfEventAction(const G4Event*)
 {
     if(!fRunAction) return;
@@ -62,6 +113,7 @@ fRunAction->nCompton = 0;
 fRunAction->nPairProd = 0;
 fRunAction->nIonisation = 0;
 }
+*/
 
 void EventAction::EndOfEventAction(const G4Event*)
 {
