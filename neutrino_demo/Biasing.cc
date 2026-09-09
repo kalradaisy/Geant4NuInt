@@ -18,10 +18,18 @@ G4VBiasingOperator(name),
 fSetup(true)
 {
     // Processes to bias:
+    fProcessesToBias.insert("tauNuNucleusCC");
+    fProcessesToBias.insert("tauNuNucleusNC");
     fProcessesToBias.insert("muNuNucleusCC");
     fProcessesToBias.insert("muNuNucleusNC");
     fProcessesToBias.insert("elNuNucleusCC");
     fProcessesToBias.insert("elNuNucleusNC");
+    fProcessesToBias.insert("aTauNuNucleusCC");
+    fProcessesToBias.insert("aTauNuNucleusNC");
+    fProcessesToBias.insert("aMuNuNucleusCC");
+    fProcessesToBias.insert("aMuNuNucleusNC");
+    fProcessesToBias.insert("aElNuNucleusCC");
+    fProcessesToBias.insert("aElNuNucleusNC");
 
     //fProcessesToBias.insert("nuElectron");
     // Replace "nuElectron" with split channel names
@@ -29,18 +37,26 @@ fSetup(true)
     fProcessesToBias.insert("nuElectronNC");
 
     // Initialize with default values for the biasing
+    fBiasFactors["tauNuNucleusCC"] = defaultFactor;
+    fBiasFactors["tauNuNucleusNC"] = defaultFactor;
     fBiasFactors["muNuNucleusCC"] = defaultFactor;
     fBiasFactors["muNuNucleusNC"] = defaultFactor;
     fBiasFactors["elNuNucleusCC"] = defaultFactor;
     fBiasFactors["elNuNucleusNC"] = defaultFactor;
+    fBiasFactors["aTauNuNucleusCC"] = defaultFactor;
+    fBiasFactors["aTauNuNucleusNC"] = defaultFactor;
+    fBiasFactors["aMuNuNucleusCC"] = defaultFactor;
+    fBiasFactors["aMuNuNucleusNC"] = defaultFactor;
+    fBiasFactors["aElNuNucleusCC"] = defaultFactor;
+    fBiasFactors["aElNuNucleusNC"] = defaultFactor;
     fBiasFactors["nuElectronCC"]  = defaultFactor;
     fBiasFactors["nuElectronNC"]  = defaultFactor;
 
     // Prepare the messenger
     fMessenger = new BiasingMessenger(this);
 
-    G4cout << "[Biasing] Operator created. Listening for macro commands..."
-    << G4endl;
+    /*G4cout << "[Biasing] Operator created. Listening for macro commands..."
+    << G4endl;*/
 }
 
 Biasing::~Biasing()
@@ -55,7 +71,7 @@ Biasing::~Biasing()
 void Biasing::SetBiasFactor(const G4String& processName, G4double factor)
 {
     fBiasFactors[processName] = factor;
-    G4cout << "[Biasing] Updated " << processName << " bias factor to: " << factor << G4endl;
+    //G4cout << "[Biasing] Updated " << processName << " bias factor to: " << factor << G4endl;
 }
 
 void Biasing::StartRun()
@@ -221,7 +237,8 @@ void Biasing::OperationApplied(
     if (operation == occurenceOperationApplied)
     {
         operation->SetInteractionOccured();
-
+        //debug print
+        /*
         G4cout
             << "\n ===========================================\n"
             << "[Biasing] Interaction occurred in "
@@ -229,7 +246,7 @@ void Biasing::OperationApplied(
                    ->GetWrappedProcess()
                    ->GetProcessName()
             << "\n ===========================================\n"
-            << G4endl;
+            << G4endl;*/
     }
 }
 

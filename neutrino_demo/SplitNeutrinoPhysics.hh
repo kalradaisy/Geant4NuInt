@@ -23,9 +23,56 @@
 #include "G4Element.hh"
 #include "G4Material.hh"
 #include "G4Isotope.hh"
+#include "G4TauNeutrinoNucleusTotXsc.hh"
 #include "G4MuNeutrinoNucleusTotXsc.hh"
 #include "G4ElNeutrinoNucleusTotXsc.hh"
 #include <cmath>
+
+// ----------------------------------------------------------------------
+// Tau (Anti) Neutrtino Charged Current Nuclear Scattering Cross Section
+// ----------------------------------------------------------------------
+class MyTauNeutrinoNucleusCcXsc : public G4TauNeutrinoNucleusTotXsc {
+public:
+    MyTauNeutrinoNucleusCcXsc() : G4TauNeutrinoNucleusTotXsc() {}
+    virtual ~MyTauNeutrinoNucleusCcXsc() = default;
+    /* GetIsoCrossSection intrinsically performs a check on whether the particle
+    is matter or antimatter and returns the appropriate cross section ratio
+    based on that information, so we don't need a different class for the
+    differing matter cases*/
+    virtual G4double GetIsoCrossSection(const G4DynamicParticle* aPart, G4int Z, G4int A,  
+                                        const G4Isotope* iso, 
+                                        const G4Element* elm, 
+                                        const G4Material* mat) override 
+    {
+        // Call the base class to perform the native calculation
+        // This calculates ccnuXsc and ncXsc internally, sets fCcTotRatio, and returns totXsc.
+        G4double totXsc = G4TauNeutrinoNucleusTotXsc::GetIsoCrossSection(aPart, Z, A, iso, elm, mat);
+
+        // Extract only the CC portion using the freshly updated ratio for this specific isotope
+        return totXsc * GetCcTotRatio();
+    }
+};
+
+// ----------------------------------------------------------------------
+// Tau (Anti) Neutrtino Neutral Current Nuclear Scattering Cross Section
+// ----------------------------------------------------------------------
+class MyTauNeutrinoNucleusNcXsc : public G4TauNeutrinoNucleusTotXsc {
+public:
+    MyTauNeutrinoNucleusNcXsc() : G4TauNeutrinoNucleusTotXsc() {}
+    virtual ~MyTauNeutrinoNucleusNcXsc() = default;
+
+    virtual G4double GetIsoCrossSection(const G4DynamicParticle* aPart, G4int Z, G4int A,  
+                                        const G4Isotope* iso, 
+                                        const G4Element* elm, 
+                                        const G4Material* mat) override 
+    {
+        // Call the base class ...
+        G4double totXsc = G4TauNeutrinoNucleusTotXsc::GetIsoCrossSection(aPart, Z, A, iso, elm, mat);
+
+        // .. and extract only the NC portion
+        return totXsc * (1.0 - GetCcTotRatio());
+    }
+};
 
 // ----------------------------------------------------------------------
 // Muon (Anti) Neutrtino Charged Current Nuclear Scattering Cross Section
@@ -43,11 +90,11 @@ public:
                                         const G4Element* elm, 
                                         const G4Material* mat) override 
     {
-        // 1. Call the base class to perform the native calculation
+        // Call the base class to perform the native calculation
         // This calculates ccnuXsc and ncXsc internally, sets fCcTotRatio, and returns totXsc.
         G4double totXsc = G4MuNeutrinoNucleusTotXsc::GetIsoCrossSection(aPart, Z, A, iso, elm, mat);
 
-        // 2. Extract only the CC portion using the freshly updated ratio for this specific isotope
+        // Extract only the CC portion using the freshly updated ratio for this specific isotope
         return totXsc * GetCcTotRatio();
     }
 };

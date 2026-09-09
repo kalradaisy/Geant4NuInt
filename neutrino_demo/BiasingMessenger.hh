@@ -19,6 +19,10 @@ public:
 private:
     Biasing* fBiasing;
     G4UIdirectory* fBiasingDir;
+    G4UIcmdWithADouble* fTauNuNucleusCcCmd;
+    G4UIcmdWithADouble* fTauNuNucleusNcCmd;
+    G4UIcmdWithADouble* fTauANuNucleusCcCmd;
+    G4UIcmdWithADouble* fTauANuNucleusNcCmd;
     G4UIcmdWithADouble* fMuNuNucleusCcCmd;
     G4UIcmdWithADouble* fMuNuNucleusNcCmd;
     G4UIcmdWithADouble* fMuANuNucleusCcCmd;

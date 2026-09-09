@@ -7,6 +7,10 @@
 #include "G4NeutrinoElectronCcXsc.hh"
 #include "G4NeutrinoElectronNcModel.hh"
 #include "G4NeutrinoElectronNcXsc.hh"
+#include "G4NuTauNucleusCcModel.hh"
+#include "G4NuTauNucleusNcModel.hh"
+#include "G4ANuTauNucleusCcModel.hh"
+#include "G4ANuTauNucleusNcModel.hh"
 #include "G4NuMuNucleusCcModel.hh"
 #include "G4NuMuNucleusNcModel.hh"
 #include "G4ANuMuNucleusCcModel.hh"
@@ -15,6 +19,7 @@
 #include "G4NuElNucleusNcModel.hh"
 #include "G4ANuElNucleusCcModel.hh"
 #include "G4ANuElNucleusNcModel.hh"
+#include "G4TauNeutrinoNucleusTotXsc.hh"
 #include "G4MuNeutrinoNucleusTotXsc.hh"
 #include "G4ElNeutrinoNucleusTotXsc.hh"
 
@@ -29,10 +34,8 @@ SplitNeutrinoPhysics::SplitNeutrinoPhysics(const G4String& name)
 
 void SplitNeutrinoPhysics::ConstructProcess()
 {
-    // 1. Construct active split sectors
     ConstructNuElectronProcesses();
 
-    // 2. Future expansion point (e.g. CC/NC nucleus scattering)
     ConstructNuNucleusProcesses();
 }
 
@@ -84,12 +87,42 @@ void SplitNeutrinoPhysics::ConstructNuElectronProcesses()
 
 void SplitNeutrinoPhysics::ConstructNuNucleusProcesses()
 {
+    // --- Tau Neutrinos: CC and NC ---
+    auto tauCC = new G4HadronicProcess("tauNuNucleusCC");
+    tauCC->RegisterMe(new G4NuTauNucleusCcModel());
+    tauCC->AddDataSet(new MyTauNeutrinoNucleusCcXsc());
+
+    auto tauNC = new G4HadronicProcess("tauNuNucleusNC");
+    tauNC->RegisterMe(new G4NuTauNucleusNcModel());
+    tauNC->AddDataSet(new MyTauNeutrinoNucleusNcXsc());
+
+    RegisterProcessesForNeutrinos(
+        {"nu_tau"},
+        {tauCC, tauNC}, 
+        {"tauNuNucleus"}
+    );
+
+    // --- Tau Anti Neutrinos: CC and NC ---
+    auto aTauCC = new G4HadronicProcess("aTauNuNucleusCC");
+    aTauCC->RegisterMe(new G4ANuTauNucleusCcModel());
+    aTauCC->AddDataSet(new MyTauNeutrinoNucleusCcXsc());
+
+    auto aTauNC = new G4HadronicProcess("aTauNuNucleusNC");
+    aTauNC->RegisterMe(new G4ANuTauNucleusNcModel());
+    aTauNC->AddDataSet(new MyTauNeutrinoNucleusNcXsc());
+
+    RegisterProcessesForNeutrinos(
+        {"anti_nu_tau"}, 
+        {aTauCC, aTauNC}, 
+        {"tauNuNucleus"}
+    );
+
     // --- Muon Neutrinos: CC and NC ---
     auto muCC = new G4HadronicProcess("muNuNucleusCC");
-    muCC->RegisterMe(new MyNuMuNucleusCcModel());
+    muCC->RegisterMe(new G4NuMuNucleusCcModel());
     muCC->AddDataSet(new MyMuNeutrinoNucleusCcXsc());
-    muCC->SetEnergyMomentumCheckLevels(0.001, 10.0 * CLHEP::MeV);
-    muCC->SetEpReportLevel(3);
+    //muCC->SetEnergyMomentumCheckLevels(0.001, 10.0 * CLHEP::MeV);
+    //muCC->SetEpReportLevel(3);
 
     auto muNC = new G4HadronicProcess("muNuNucleusNC");
     muNC->RegisterMe(new G4NuMuNucleusNcModel());
@@ -180,11 +213,11 @@ void SplitNeutrinoPhysics::RegisterProcessesForNeutrinos(
         }
         // --- DIAGNOSTIC PRINTOUT ---
         // Dynamically print out the registered processes for whichever particle is passed
-        G4cout << "\n=== Registered Processes for " << particleName << " ===" << G4endl;
+        /*G4cout << "\n=== Registered Processes for " << particleName << " ===" << G4endl;
         G4ProcessVector* pList = pmanager->GetProcessList();
         for (std::size_t i = 0; i < pList->size(); ++i) {
             G4cout << "  Process [" << i << "]: " << (*pList)[i]->GetProcessName() << G4endl;
         }
-        G4cout << "===========================================\n" << G4endl;
+        G4cout << "===========================================\n" << G4endl;*/
     }
 }

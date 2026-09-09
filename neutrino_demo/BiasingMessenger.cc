@@ -22,6 +22,30 @@ BiasingMessenger::BiasingMessenger(Biasing* biasing)
     fNuElectronNcCmd->SetParameterName("factor", false);
     fNuElectronNcCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
 
+    // Command for Tau Neutrino-Nucleus CC Bias
+    fTauNuNucleusCcCmd = new G4UIcmdWithADouble("/custom/biasing/TauNuNucleusCcBias", this);
+    fTauNuNucleusCcCmd->SetGuidance("Set the bias factor for tau neutrino-nucleus processes (tauNuNucleusCC).");
+    fTauNuNucleusCcCmd->SetParameterName("factor", false);
+    fTauNuNucleusCcCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+    // Command for Tau Neutrino-Nucleus NC Bias
+    fTauNuNucleusNcCmd = new G4UIcmdWithADouble("/custom/biasing/TauNuNucleusNcBias", this);
+    fTauNuNucleusNcCmd->SetGuidance("Set the bias factor for tau neutrino-nucleus processes (tauNuNucleusNC).");
+    fTauNuNucleusNcCmd->SetParameterName("factor", false);
+    fTauNuNucleusNcCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+    // Command for Tau Anti Neutrino-Nucleus CC Bias
+    fTauANuNucleusCcCmd = new G4UIcmdWithADouble("/custom/biasing/TauANuNucleusCcBias", this);
+    fTauANuNucleusCcCmd->SetGuidance("Set the bias factor for tau anti neutrino-nucleus processes (tauANuNucleusCC).");
+    fTauANuNucleusCcCmd->SetParameterName("factor", false);
+    fTauANuNucleusCcCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
+    // Command for Tau Anti Neutrino-Nucleus NC Bias
+    fTauANuNucleusNcCmd = new G4UIcmdWithADouble("/custom/biasing/TauANuNucleusNcBias", this);
+    fTauANuNucleusNcCmd->SetGuidance("Set the bias factor for tau anti neutrino-nucleus processes (tauANuNucleusNC).");
+    fTauANuNucleusNcCmd->SetParameterName("factor", false);
+    fTauANuNucleusNcCmd->AvailableForStates(G4State_PreInit, G4State_Idle);
+
     // Command for Muon Neutrino-Nucleus CC Bias
     fMuNuNucleusCcCmd = new G4UIcmdWithADouble("/custom/biasing/MuNuNucleusCcBias", this);
     fMuNuNucleusCcCmd->SetGuidance("Set the bias factor for muon neutrino-nucleus processes (muNuNucleusCC).");
@@ -74,6 +98,10 @@ BiasingMessenger::BiasingMessenger(Biasing* biasing)
 
 BiasingMessenger::~BiasingMessenger()
 {
+    delete fTauNuNucleusCcCmd;
+    delete fTauNuNucleusNcCmd;
+    delete fTauANuNucleusCcCmd;
+    delete fTauANuNucleusNcCmd;
     delete fMuNuNucleusCcCmd;
     delete fMuNuNucleusNcCmd;
     delete fMuANuNucleusCcCmd;
@@ -91,17 +119,29 @@ void BiasingMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
 {
     //TODO: MAKE THESE ENUMS, THIS LOOKS DISGUSTING
     // Route the command to the Biasing class based on the process name
-    if (command == fMuNuNucleusCcCmd) {
+    if (command == fTauNuNucleusCcCmd) {
+        fBiasing->SetBiasFactor("tauNuNucleusCC", fTauNuNucleusCcCmd->GetNewDoubleValue(newValue));
+    }
+    else if (command == fTauNuNucleusNcCmd) {
+        fBiasing->SetBiasFactor("tauNuNucleusNC", fTauNuNucleusNcCmd->GetNewDoubleValue(newValue));
+    }
+    else if (command == fTauANuNucleusCcCmd) {
+        fBiasing->SetBiasFactor("aTauNuNucleusCC", fTauANuNucleusCcCmd->GetNewDoubleValue(newValue));
+    }
+    else if (command == fTauANuNucleusNcCmd) {
+        fBiasing->SetBiasFactor("aTauNuNucleusNC", fTauANuNucleusNcCmd->GetNewDoubleValue(newValue));
+    }
+    else if (command == fMuNuNucleusCcCmd) {
         fBiasing->SetBiasFactor("muNuNucleusCC", fMuNuNucleusCcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fMuNuNucleusNcCmd) {
         fBiasing->SetBiasFactor("muNuNucleusNC", fMuNuNucleusNcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fMuANuNucleusCcCmd) {
-        fBiasing->SetBiasFactor("muANuNucleusCC", fMuANuNucleusCcCmd->GetNewDoubleValue(newValue));
+        fBiasing->SetBiasFactor("aMuNuNucleusCC", fMuANuNucleusCcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fMuANuNucleusNcCmd) {
-        fBiasing->SetBiasFactor("muANuNucleusNC", fMuANuNucleusNcCmd->GetNewDoubleValue(newValue));
+        fBiasing->SetBiasFactor("aMuNuNucleusNC", fMuANuNucleusNcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fElNuNucleusCcCmd) {
         fBiasing->SetBiasFactor("elNuNucleusCC", fElNuNucleusCcCmd->GetNewDoubleValue(newValue));
@@ -110,10 +150,10 @@ void BiasingMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
         fBiasing->SetBiasFactor("elNuNucleusNC", fElNuNucleusNcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fElANuNucleusCcCmd) {
-        fBiasing->SetBiasFactor("elANuNucleusCC", fElANuNucleusCcCmd->GetNewDoubleValue(newValue));
+        fBiasing->SetBiasFactor("aElNuNucleusCC", fElANuNucleusCcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fElANuNucleusNcCmd) {
-        fBiasing->SetBiasFactor("elANuNucleusNC", fElANuNucleusNcCmd->GetNewDoubleValue(newValue));
+        fBiasing->SetBiasFactor("aElNuNucleusNC", fElANuNucleusNcCmd->GetNewDoubleValue(newValue));
     }
     else if (command == fNuElectronCcCmd) {
         fBiasing->SetBiasFactor("nuElectronCC", fNuElectronCcCmd->GetNewDoubleValue(newValue));

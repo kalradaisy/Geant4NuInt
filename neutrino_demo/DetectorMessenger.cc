@@ -33,7 +33,7 @@ void DetectorConstruction::ConstructSDandField()
     auto biasOp = new Biasing("NuBias");
     auto lvStore = G4LogicalVolumeStore::GetInstance();
 
-    G4cout << "\n=== Attaching Biasing Operator on Worker Thread ===" << G4endl;
+    //G4cout << "\n=== Attaching Biasing Operator on Worker Thread ===" << G4endl;
     for (auto lv : *lvStore)
     {
         // Skip World volume
@@ -56,7 +56,7 @@ void DetectorConstruction::ConstructSDandField()
         { 
             biasOp->AttachTo(lv);
             // Optional: comment out this G4cout if it prints too many lines
-            G4cout << ">>> Biasing attached to: " << lv->GetName() << G4endl;
+            // G4cout << ">>> Biasing attached to: " << lv->GetName() << G4endl;
         }
     }
 }

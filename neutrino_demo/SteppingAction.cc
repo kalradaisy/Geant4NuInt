@@ -8,6 +8,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4HadronicProcess.hh"
 #include "G4Nucleus.hh"
+#include "G4NucleiProperties.hh"
 #include "G4IonTable.hh"       
 #include "G4ParticleDefinition.hh"
 #include "G4Step.hh"
@@ -128,7 +129,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
             bool isNuNucleus = (procName.find("Nucleus") != std::string::npos || procName.find("Nucl") != std::string::npos);
             bool isNuElectron = (procName.find("Electron") != std::string::npos || procName.find("e-") != std::string::npos);
-            // 1. Determine CC vs NC directly from the Geant4 Process Name
+            // Determine CC vs NC directly from the Geant4 Process Name
             // We use .find() because G4VBiasingOperator prepends "biasWrapper(" to the procName
             bool isCC = (procName.find("CC") != std::string::npos);
             bool isNC = (procName.find("NC") != std::string::npos);
@@ -348,43 +349,126 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
             // Just a helpful print for neutrino biasing testing
             // Can be commented out if running a macroscopic number of events
             // Maybe it's worth gating stuff like this behind a verbosity messenger
-            G4cout << "\n*** NEUTRINO INTERACTION RECORDED ***" << G4endl;
-            G4cout << "Process: " << procName << " | Type: " << fEventAction->interactionType 
-                << " | Model: " << fEventAction->interactionModel << G4endl;
-            if (secondaries && !secondaries->empty()) {
-                G4ThreeVector p_in = step->GetPreStepPoint()->GetMomentum();
-                G4ThreeVector p_out(0, 0, 0);
 
-                G4cout << "\n================ RUNTIME KINEMATIC DIAGNOSTIC ================" << G4endl;
+            /*G4cout << "\n*** NEUTRINO INTERACTION RECORDED ***" << G4endl;
+            G4cout << "Process: " << procName << " | Type: " << fEventAction->interactionType 
+                << " | Model: " << fEventAction->interactionModel << G4endl;*/
+
+            // print for QEP Conservation Diagnostic at runtime
+            /*
+            if (secondaries && !secondaries->empty()) {
+                
+                // Get target info
+                G4double targetMass = 0.0;
+                G4double targetCharge = 0.0;
+                G4String targetName = "None/Unknown";
+                
+                auto proc1 = step->GetPostStepPoint()->GetProcessDefinedStep();
+                if (proc1) {
+                    const G4VProcess* actualProc = proc1;
+                    // Unwrap biasing if present
+                    if (auto biasProc = dynamic_cast<const G4BiasingProcessInterface*>(proc1)) {
+                        actualProc = biasProc->GetWrappedProcess();
+                    }
+                    
+                    if (auto hadProc = dynamic_cast<const G4HadronicProcess*>(actualProc)) {
+                        const G4Nucleus* target = hadProc->GetTargetNucleus();
+                        if (target) {
+                            int Z = target->GetZ_asInt();
+                            int A = target->GetA_asInt();
+                            int targetPDGCode = 1000000000 + 10000 * Z + 10 * A;
+                            
+                            targetCharge = Z; // Charge in fundamental units
+                            targetMass = G4NucleiProperties::GetNuclearMass(A, Z);
+                            targetName = "Z:" + std::to_string(Z) + " A:" + std::to_string(A);
+                        }
+                    }
+                }
+
+                // Calculate Final State
+                G4ThreeVector p_in_track = step->GetPreStepPoint()->GetMomentum();
+                G4double e_in_track = step->GetPreStepPoint()->GetTotalEnergy();
+                G4double q_in_track = track->GetDefinition()->GetPDGCharge() / CLHEP::eplus;
+
+                G4ThreeVector p_in_total = p_in_track; // Target is at rest
+                G4double e_in_total = e_in_track + targetMass;
+                G4double q_in_total = q_in_track + targetCharge;
+
+                // Calculate initial state
+                G4ThreeVector p_out_total(0, 0, 0);
+                G4double e_out_total = 0.0;
+                G4double q_out_total = 0.0;
+                
+
+                G4cout << "\n================ Q/E/P Conservation Check ================" << G4endl;
                 G4cout << "Event ID: " << G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID() << G4endl;
-                G4cout << "Incident "<< track->GetDefinition()->GetParticleName() << " Momentum: " << p_in / CLHEP::GeV << " GeV/c" << G4endl;
+                
+                G4cout << "\n[INITIAL STATE]" << G4endl;
+                G4cout << "Incident " << track->GetDefinition()->GetParticleName() 
+                    << " | Q: " << q_in_track 
+                    << " | E: " << e_in_track / CLHEP::GeV << " GeV"
+                    << " | P: " << p_in_track / CLHEP::GeV << " GeV/c" << G4endl;
+                G4cout << "Target " << targetName 
+                    << "   | Q: " << targetCharge 
+                    << " | E (mass): " << targetMass / CLHEP::GeV << " GeV" << G4endl;
+                G4cout << "--------------------------------------------------------------" << G4endl;
+                G4cout << "TOTAL IN     | Q: " << q_in_total 
+                    << " | E: " << e_in_total / CLHEP::GeV << " GeV"
+                    << " | P: " << p_in_total / CLHEP::GeV << " GeV/c" << G4endl;
+                
+                G4cout << "\n[FINAL STATE]" << G4endl;
                 
                 for (auto sec : *secondaries) {
-                    // Ensure we only sum direct daughters of this neutrino
                     if (sec->GetParentID() == track->GetTrackID()) {
-                        p_out += sec->GetMomentum();
+                        G4ThreeVector p = sec->GetMomentum();
+                        G4double e = sec->GetTotalEnergy();
+                        G4double q = sec->GetDefinition()->GetPDGCharge() / CLHEP::eplus;
                         
-                        // --- DYNAMIC MASS CHECK ---
-                        G4double pdgMass = sec->GetDefinition()->GetPDGMass();
-                        G4double dynMass = sec->GetDynamicParticle()->GetMass();
-                        G4double massDiff = dynMass - pdgMass;
+                        p_out_total += p;
+                        e_out_total += e;
+                        q_out_total += q;
+                        
+                        // Format generic ion/remnant names
+                        G4String secName = sec->GetDefinition()->GetParticleName();
+                        if (secName.empty() || secName == "GenericIon") {
+                            G4int pdg = sec->GetDefinition()->GetPDGEncoding();
+                            if (pdg > 1000000000) {
+                                G4int sZ = (pdg % 10000000) / 10000;
+                                G4int sA = (pdg % 10000) / 10;
+                                secName = "Ion_Z" + std::to_string(sZ) + "_A" + std::to_string(sA);
+                            } else {
+                                secName = "PDG_" + std::to_string(pdg);
+                            }
+                        }
 
-                        G4cout << "  -> Daughter: " << sec->GetDefinition()->GetParticleName() 
-                            << " | P: " << sec->GetMomentum() / CLHEP::GeV << " GeV/c\n"
-                            << "     [Mass Check] PDG: " << pdgMass / CLHEP::GeV 
-                            << " GeV | Dynamic: " << dynMass / CLHEP::GeV 
-                            << " GeV | Diff: " << massDiff / CLHEP::GeV << " GeV" << G4endl;
+                        G4cout << "  -> " << secName 
+                            << " | Q: " << q 
+                            << " | E: " << e / CLHEP::GeV << " GeV" 
+                            << " | P: " << p / CLHEP::GeV << " GeV/c" << G4endl;
                     }
                 }
                 
-                G4ThreeVector p_miss = p_in - p_out;
-                
                 G4cout << "--------------------------------------------------------------" << G4endl;
-                G4cout << "Vector Sum Out:    " << p_out / CLHEP::GeV << " GeV/c" << G4endl;
-                G4cout << "Missing Vector:    " << p_miss / CLHEP::GeV << " GeV/c" << G4endl;
-                G4cout << "Magnitude Missing: " << p_miss.mag() / CLHEP::GeV << " GeV/c" << G4endl;
+                G4cout << "TOTAL OUT    | Q: " << q_out_total 
+                    << " | E: " << e_out_total / CLHEP::GeV << " GeV"
+                    << " | P: " << p_out_total / CLHEP::GeV << " GeV/c" << G4endl;
+
+                // 4. CONSERVATION CHECK
+                G4double edep = step->GetTotalEnergyDeposit(); // local edep
+                
+                G4double delta_E = e_in_total - (e_out_total + edep);
+                G4double delta_Q = q_in_total - q_out_total;
+                G4ThreeVector missing_P = p_in_total - p_out_total;
+                
+                G4cout << "\n[Conservation Deltas]" << G4endl;
+                G4cout << "Q Delta : " << delta_Q << " e" << G4endl;
+                G4cout << "Local Edep: " << edep / CLHEP::GeV << " GeV (" << edep / CLHEP::MeV << " MeV)" << G4endl;
+                G4cout << "E Delta: " << delta_E / CLHEP::GeV << " GeV (" << delta_E / CLHEP::MeV << " MeV)" << G4endl;
+                G4cout << "P Vector Delta: " << missing_P / CLHEP::GeV << " GeV/c" << G4endl;
+                G4cout << "|P| Delta : " << missing_P.mag() / CLHEP::GeV << " GeV/c" << G4endl;
                 G4cout << "==============================================================\n" << G4endl;
             }
+        */
         } 
         else {
             // Below is if you're firing something other than neutrinos
