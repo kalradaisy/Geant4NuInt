@@ -21,9 +21,6 @@ set(SOURCES
     DetectorMessenger.cc
     PrimaryGenerator.cc
     PrimaryGeneratorMessenger.cc
-    MyNeutrinoPhysics.cc
-    MyNeutrinoPhysicsMessenger.cc
-    MyPhysicsList.cc
     RunAction.cc
     EventAction.cc
     SteppingAction.cc

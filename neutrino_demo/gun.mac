@@ -22,7 +22,7 @@
 /control/alias NUELECNCBIAS 1
 
 #______________________________________________________________________________
-/physics_lists/nu/NuDetectorName target
+# /physics_lists/nu/NuDetectorName target
 # Still need to define where the detector is so that we can define where the
 # biasing is to happen. 
 
